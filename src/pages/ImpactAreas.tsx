@@ -27,43 +27,43 @@ const impactAreas = [
     title: "Early Learning",
     description: "Supporting countries to improve access and quality learning for all children in the early years.",
     icon: <Baby size={32} />,
-    image: "https://images.unsplash.com/photo-1510563800743-a923139a11ac?q=80&w=1972&auto=format&fit=crop"
+    image: "https://i.imgur.com/fXTrPWb.jpeg"
   },
   {
     title: "Gender Equality",
     description: "Committed to ensuring all girls and boys have the same opportunities for education.",
     icon: <Users size={32} />,
-    image: "https://images.unsplash.com/photo-1589184451000-84a144de5f6e?q=80&w=2069&auto=format&fit=crop"
+    image: "https://i.imgur.com/9OnvAiN.jpeg"
   },
   {
     title: "Inclusive Education",
     description: "Making education more accessible and free of discrimination so that no child is left behind.",
     icon: <Scale size={32} />,
-    image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop"
+    image: "https://i.imgur.com/7cpCsAt.jpeg"
   },
   {
     title: "Learning",
     description: "Helping millions more children learn the essential skills they need to thrive in the 21st century.",
     icon: <BookOpen size={32} />,
-    image: "https://images.unsplash.com/photo-1547408713-3566f1165e64?q=80&w=2073&auto=format&fit=crop"
+    image: "https://i.imgur.com/7zkUXXt.jpeg"
   },
   {
     title: "Peace and Security",
     description: "Quality education for all is one of the best investments to counter political, economic and displacement risks.",
     icon: <ShieldCheck size={32} />,
-    image: "https://images.unsplash.com/photo-1489710437720-ebb67bc84dd2?q=80&w=2064&auto=format&fit=crop"
+    image: "https://i.imgur.com/CD6oHZE.jpeg"
   },
   {
     title: "Quality Teaching",
     description: "Investing in quality teachers and teaching to improve student learning.",
     icon: <UserCheck size={32} />,
-    image: "https://images.unsplash.com/photo-1531548731165-c6ae86ff6491?q=80&w=2070&auto=format&fit=crop"
+    image: "https://i.imgur.com/5zETtAj.jpeg"
   },
   {
     title: "Safe Learning",
     description: "Addressing violence in and around schools that affects children's learning, safety, and school attendance worldwide.",
     icon: <HandMetal size={32} />,
-    image: "https://images.unsplash.com/photo-1621236304192-38378b88bc04?q=80&w=2070&auto=format&fit=crop"
+    image: "https://i.imgur.com/TMBfL75.jpeg"
   },
   {
     title: "Skills for Jobs",
