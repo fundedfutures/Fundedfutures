@@ -290,7 +290,7 @@ function Home() {
               className="relative aspect-square md:aspect-[4/5] rounded-3xl overflow-hidden border border-gray-100 order-2 md:order-1"
             >
               <img 
-                src="https://i.imgur.com/Tbf2Ntr.jpeg" 
+                src="https://i.imgur.com/c2tmG1v.jpeg" 
                 alt="Community context" 
                 className="w-full h-full object-cover hover:scale-105 transition-smooth duration-1000"
                 referrerPolicy="no-referrer"
