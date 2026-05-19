@@ -5,13 +5,12 @@ import {
   ArrowLeft, 
   ArrowRight,
   ShieldCheck, 
-  Smartphone, 
   Lock,
   Heart,
   CheckCircle2,
   Copy,
   X,
-  ExternalLink
+  ChevronDown
 } from 'lucide-react';
 import { Button, Card } from '../components/UI';
 
@@ -37,127 +36,147 @@ const CURRENCY_CONFIG: Record<string, {
     name: 'Kenyan Shilling', 
     symbol: 'KES', 
     flag: '🇰🇪', 
-    min: 1000, 
+    min: 50, 
     max: 1000000, 
-    step: 1000,
-    presets: [1000, 5000, 10000, 50000, 100000] 
+    step: 1,
+    presets: [500, 1000, 5000, 10000, 50000] 
   },
   USD: { 
     name: 'US Dollar', 
-    symbol: 'USD', 
+    symbol: '$', 
     flag: '🇺🇸', 
-    min: 500, 
+    min: 10, 
     max: 10000, 
-    step: 500,
-    presets: [500, 1000, 2500, 5000, 7500] 
+    step: 1,
+    presets: [10, 50, 100, 500, 1000] 
   },
   GBP: { 
     name: 'British Pound', 
-    symbol: 'GBP', 
+    symbol: '£', 
     flag: '🇬🇧', 
-    min: 500, 
+    min: 10, 
     max: 10000, 
-    step: 500,
-    presets: [500, 1000, 2500, 5000, 7500] 
-  }
+    step: 1,
+    presets: [10, 50, 100, 500, 1000] 
+  },
+  EUR: { 
+    name: 'Euro', 
+    symbol: '€', 
+    flag: '🇪🇺', 
+    min: 10, 
+    max: 10000, 
+    step: 1,
+    presets: [10, 50, 100, 500, 1000] 
+  },
+  CAD: { 
+    name: 'Canadian Dollar', 
+    symbol: 'CA$', 
+    flag: '🇨🇦', 
+    min: 10, 
+    max: 10000, 
+    step: 1,
+    presets: [10, 50, 100, 500, 1000] 
+  },
+  AUD: { 
+    name: 'Australian Dollar', 
+    symbol: 'A$', 
+    flag: '🇦🇺', 
+    min: 10, 
+    max: 10000, 
+    step: 1,
+    presets: [10, 50, 100, 500, 1000] 
+  },
+  ZAR: { 
+    name: 'South African Rand', 
+    symbol: 'R', 
+    flag: '🇿🇦', 
+    min: 100, 
+    max: 100000, 
+    step: 1,
+    presets: [100, 500, 1000, 5000, 10000] 
+  },
+  NGN: { 
+    name: 'Nigerian Naira', 
+    symbol: '₦', 
+    flag: '🇳🇬', 
+    min: 500, 
+    max: 5000000, 
+    step: 100,
+    presets: [500, 1000, 5000, 50000, 100000] 
+  },
 };
 
 const MILESTONES: Record<string, { threshold: number; message: string }[]> = {
   KES: [
-    { threshold: 1000, message: "Every journey begins with a single step. Thank you for taking yours!" },
+    { threshold: 50, message: "Every journey begins with a single step. Thank you for taking yours!" },
+    { threshold: 200, message: "Two hundred shillings — a child's exercise books for a term." },
+    { threshold: 500, message: "Five hundred shillings closer to a brighter classroom. Thank you." },
+    { threshold: 1000, message: "A thousand shillings — a child's supplies for a full term. Beautiful." },
     { threshold: 2000, message: "Two thousand shillings — a child's books and supplies for a term. Beautiful." },
-    { threshold: 3000, message: "You're already making a real difference. We see you!" },
-    { threshold: 4000, message: "Four thousand shillings closer to a brighter classroom. Thank you." },
     { threshold: 5000, message: "Half of a child's term fees. You are halfway to something incredible." },
-    { threshold: 6000, message: "Six thousand shillings — that's a child's uniform, shoes, and more." },
-    { threshold: 7000, message: "Seven thousand. A child will walk to school with everything they need because of you." },
-    { threshold: 8000, message: "Eight thousand shillings. You are covering more than you know." },
-    { threshold: 9000, message: "Almost at ten thousand — your heart is generous and your impact is real." },
     { threshold: 10000, message: "You've just covered a full term's school fees for one child. Thank you!" },
-    { threshold: 11000, message: "A child's fees and a little more — you are going above and beyond." },
-    { threshold: 12000, message: "Twelve thousand shillings. Two children's supplies for a full term." },
-    { threshold: 13000, message: "You are building futures one shilling at a time. Keep going!" },
-    { threshold: 14000, message: "Fourteen thousand — a family can breathe a little easier tonight." },
-    { threshold: 15000, message: "Fifteen thousand shillings. One and a half children fully funded for a term." },
-    { threshold: 16000, message: "Sixteen thousand. The ripple of your kindness is spreading." },
-    { threshold: 17000, message: "Seventeen thousand shillings — a child's entire term plus extras covered." },
-    { threshold: 18000, message: "Eighteen thousand. You are changing what is possible for these families." },
-    { threshold: 19000, message: "Nineteen thousand shillings. We are in awe of your generosity." },
     { threshold: 20000, message: "Two children will stay in school because of you. That's extraordinary!" },
-    { threshold: 25000, message: "Twenty-five thousand shillings — two and a half children funded for a full term." },
-    { threshold: 30000, message: "You're changing the story for an entire family. We are so grateful." },
-    { threshold: 35000, message: "Thirty-five thousand shillings. Three children and counting — thank you!" },
-    { threshold: 40000, message: "A whole classroom is brighter because of your generosity." },
-    { threshold: 45000, message: "Forty-five thousand shillings. Four families feel the warmth of your giving." },
     { threshold: 50000, message: "You are becoming a cornerstone of this community. Thank you!" },
-    { threshold: 60000, message: "Sixty thousand shillings. Six children. Six futures. All lit up by you." },
-    { threshold: 70000, message: "Seventy thousand — you are not just donating, you are investing in a generation." },
-    { threshold: 80000, message: "Eighty thousand shillings. Eight children will walk into a classroom because of this." },
-    { threshold: 90000, message: "Ninety thousand. You are one of the most generous souls we have encountered." },
     { threshold: 100000, message: "One hundred thousand shillings. You've just sponsored an entire year of education for a child. Life-changing." },
-    { threshold: 150000, message: "Three families will never forget this moment. Neither will we." },
-    { threshold: 200000, message: "You've covered a full year of school fees for four children. You are a hero." },
     { threshold: 250000, message: "A quarter of a million shillings — you are rewriting futures." },
-    { threshold: 300000, message: "Six children. One full year. All because of you." },
-    { threshold: 350000, message: "Three hundred and fifty thousand shillings. Seven children, fully funded for a year." },
-    { threshold: 400000, message: "You're building something that will outlast all of us. Thank you." },
-    { threshold: 450000, message: "Nine children. Nine futures secured. You are extraordinary." },
     { threshold: 500000, message: "Halfway to a million — your heart is as big as your vision." },
-    { threshold: 550000, message: "Eleven children. A full year each. This is what generosity looks like." },
-    { threshold: 600000, message: "Twelve children. Twelve futures. Twelve families changed forever." },
-    { threshold: 650000, message: "Thirteen children will grow up differently because of what you are doing right now." },
-    { threshold: 700000, message: "You are not just donating — you are investing in a generation." },
-    { threshold: 750000, message: "Fifteen children. Three quarters of a million shillings. You are remarkable." },
-    { threshold: 800000, message: "Sixteen children. The ripple effect of this gift will last decades." },
-    { threshold: 850000, message: "Seventeen children. Seventeen families. One extraordinary person — you." },
-    { threshold: 900000, message: "Almost there. You are one of the most generous people we have ever encountered." },
-    { threshold: 950000, message: "Nineteen children fully funded for a year. One final push — you are almost at a million." },
     { threshold: 1000000, message: "One million shillings. You have just transformed the future of an entire community. From every child, every family, and every member of our team — asante sana. Thank you." },
   ],
   USD: [
+    { threshold: 10, message: "Every journey begins with a single step. Thank you for taking yours!" },
+    { threshold: 50, message: "Fifty dollars — a child's books and supplies for a term." },
+    { threshold: 100, message: "A hundred dollars closer to a brighter classroom. Thank you." },
     { threshold: 500, message: "You've just covered a term's school fees for one child. Thank you!" },
     { threshold: 1000, message: "Two children will stay in school because of you. That's extraordinary!" },
-    { threshold: 1500, message: "You're changing the story for an entire family. We are so grateful." },
-    { threshold: 2000, message: "A whole classroom is brighter because of your generosity." },
     { threshold: 2500, message: "You are becoming a cornerstone of this community. Thank you!" },
-    { threshold: 3000, message: "Three thousand dollars — six children will have a full term ahead of them." },
-    { threshold: 3500, message: "Your generosity is reaching further than you know. Seven families feel it." },
-    { threshold: 4000, message: "You've now covered eight children for a full term. Remarkable." },
-    { threshold: 4500, message: "Nearly halfway — your commitment to these kids is unwavering." },
     { threshold: 5000, message: "Five thousand dollars. You've just sponsored an entire year of education for a child. Life-changing." },
-    { threshold: 5500, message: "Eleven children. Eleven futures. All touched by your kindness." },
-    { threshold: 6000, message: "Six thousand dollars — you are rewriting the story of an entire community." },
-    { threshold: 6500, message: "Thirteen children will walk through the school gate because of you." },
-    { threshold: 7000, message: "You are not just donating — you are investing in a generation." },
-    { threshold: 7500, message: "Three families will never forget this moment. Neither will we." },
-    { threshold: 8000, message: "Sixteen children. The ripple effect of this gift will last decades." },
-    { threshold: 8500, message: "You are one of the most generous people we have ever encountered." },
-    { threshold: 9000, message: "Eighteen children. Eighteen chances at a brighter future — all because of you." },
-    { threshold: 9500, message: "Almost there. What you are doing is nothing short of extraordinary." },
-    { threshold: 10000, message: "Ten thousand dollars. You have just transformed the future of an entire community. From every child, every family, and every member of our team — thank you, from the bottom of our hearts." },
+    { threshold: 10000, message: "Ten thousand dollars. You have just transformed the future of an entire community. Thank you, from the bottom of our hearts." },
   ],
   GBP: [
+    { threshold: 10, message: "Every journey begins with a single step. Thank you for taking yours!" },
+    { threshold: 50, message: "Fifty pounds — a child's books and supplies for a term." },
+    { threshold: 100, message: "A hundred pounds closer to a brighter classroom. Thank you." },
     { threshold: 500, message: "You've just covered a term's school fees for one child. Thank you!" },
     { threshold: 1000, message: "Two children will stay in school because of you. That's extraordinary!" },
-    { threshold: 1500, message: "You're changing the story for an entire family. We are so grateful." },
-    { threshold: 2000, message: "A whole classroom is brighter because of your generosity." },
     { threshold: 2500, message: "You are becoming a cornerstone of this community. Thank you!" },
-    { threshold: 3000, message: "Three thousand pounds — six children will have a full term ahead of them." },
-    { threshold: 3500, message: "Your generosity is reaching further than you know. Seven families feel it." },
-    { threshold: 4000, message: "You've now covered eight children for a full term. Remarkable." },
-    { threshold: 4500, message: "Nearly halfway — your commitment to these kids is unwavering." },
     { threshold: 5000, message: "Five thousand pounds. You've just sponsored an entire year of education for a child. Life-changing." },
-    { threshold: 5500, message: "Eleven children. Eleven futures. All touched by your kindness." },
-    { threshold: 6000, message: "Six thousand pounds — you are rewriting the story of an entire community." },
-    { threshold: 6500, message: "Thirteen children will walk through the school gate because of you." },
-    { threshold: 7000, message: "You are not just donating — you are investing in a generation." },
-    { threshold: 7500, message: "Three families will never forget this moment. Neither will we." },
-    { threshold: 8000, message: "Sixteen children. The ripple effect of this gift will last decades." },
-    { threshold: 8500, message: "You are one of the most generous people we have ever encountered." },
-    { threshold: 9000, message: "Eighteen children. Eighteen chances at a brighter future — all because of you." },
-    { threshold: 9500, message: "Almost there. What you are doing is nothing short of extraordinary." },
-    { threshold: 10000, message: "Ten thousand pounds. You have just transformed the future of an entire community. From every child, every family, and every member of our team — thank you, from the bottom of our hearts." },
-  ]
+    { threshold: 10000, message: "Ten thousand pounds. You have just transformed the future of an entire community. Thank you, from the bottom of our hearts." },
+  ],
+  EUR: [
+    { threshold: 10, message: "Every journey begins with a single step. Thank you for taking yours!" },
+    { threshold: 50, message: "Fifty euros — a child's books and supplies for a term." },
+    { threshold: 500, message: "You've just covered a term's school fees for one child. Thank you!" },
+    { threshold: 5000, message: "Five thousand euros. Life-changing generosity. Thank you." },
+    { threshold: 10000, message: "Ten thousand euros. You have transformed the future of an entire community. Thank you." },
+  ],
+  CAD: [
+    { threshold: 10, message: "Every journey begins with a single step. Thank you for taking yours!" },
+    { threshold: 50, message: "Fifty Canadian dollars — a child's books and supplies for a term." },
+    { threshold: 500, message: "You've just covered a term's school fees for one child. Thank you!" },
+    { threshold: 5000, message: "Five thousand dollars. Life-changing generosity. Thank you." },
+    { threshold: 10000, message: "Ten thousand dollars. You have transformed the future of an entire community. Thank you." },
+  ],
+  AUD: [
+    { threshold: 10, message: "Every journey begins with a single step. Thank you for taking yours!" },
+    { threshold: 50, message: "Fifty Australian dollars — a child's books and supplies for a term." },
+    { threshold: 500, message: "You've just covered a term's school fees for one child. Thank you!" },
+    { threshold: 5000, message: "Five thousand dollars. Life-changing generosity. Thank you." },
+    { threshold: 10000, message: "Ten thousand dollars. You have transformed the future of an entire community. Thank you." },
+  ],
+  ZAR: [
+    { threshold: 100, message: "Every journey begins with a single step. Thank you for taking yours!" },
+    { threshold: 500, message: "Five hundred rand — a child's books and supplies." },
+    { threshold: 5000, message: "You've just covered a term's school fees for one child. Thank you!" },
+    { threshold: 50000, message: "Fifty thousand rand. Life-changing generosity. Thank you." },
+    { threshold: 100000, message: "One hundred thousand rand. You have transformed the future of an entire community. Thank you." },
+  ],
+  NGN: [
+    { threshold: 500, message: "Every journey begins with a single step. Thank you for taking yours!" },
+    { threshold: 5000, message: "Five thousand naira — a child's books and supplies for a term." },
+    { threshold: 50000, message: "You've just covered a term's school fees for one child. Thank you!" },
+    { threshold: 500000, message: "Half a million naira. Life-changing generosity. Thank you." },
+    { threshold: 5000000, message: "Five million naira. You have transformed the future of an entire community. Thank you." },
+  ],
 };
 
 const InstructionModal = ({ isOpen, onClose, method, amount, currency }: any) => {
@@ -173,6 +192,7 @@ const InstructionModal = ({ isOpen, onClose, method, amount, currency }: any) =>
 
   const businessNo = "303030";
   const accountNo = "UGC9#fundedfutures";
+  const config = CURRENCY_CONFIG[currency];
 
   return (
     <AnimatePresence>
@@ -192,7 +212,6 @@ const InstructionModal = ({ isOpen, onClose, method, amount, currency }: any) =>
               exit={{ scale: 0.9, y: 20, opacity: 0 }}
               className="bg-snow max-w-md w-full rounded-[3rem] p-8 md:p-10 pointer-events-auto relative border border-white/20 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] overflow-hidden"
             >
-              {/* Close Button */}
               <button 
                 onClick={onClose}
                 className="absolute top-6 right-6 p-3 bg-white/50 hover:bg-white rounded-full text-deep-slate transition-all z-20"
@@ -236,7 +255,7 @@ const InstructionModal = ({ isOpen, onClose, method, amount, currency }: any) =>
 
                     <div className="flex justify-between items-center text-sm pt-4 border-t border-gray-50">
                       <span className="text-muted-text font-bold uppercase tracking-widest text-[10px]">Amount</span>
-                      <span className="font-mono font-bold text-lg text-forest-green">{amount.toLocaleString()} {currency}</span>
+                      <span className="font-mono font-bold text-lg text-forest-green">{config.symbol} {amount.toLocaleString()}</span>
                     </div>
                   </div>
 
@@ -276,7 +295,9 @@ const InstructionModal = ({ isOpen, onClose, method, amount, currency }: any) =>
 export default function Donate() {
   const navigate = useNavigate();
   const [currencyCode, setCurrencyCode] = useState<string>('KES');
-  const [amount, setAmount] = useState<number>(1000);
+  const [amount, setAmount] = useState<number>(500);
+  const [amountInput, setAmountInput] = useState<string>('500');
+  const [currencyDropdownOpen, setCurrencyDropdownOpen] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<string>('mpesa');
   const [error, setError] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
@@ -294,22 +315,56 @@ export default function Donate() {
 
   const handleCurrencyChange = (code: string) => {
     setCurrencyCode(code);
-    setAmount(CURRENCY_CONFIG[code].min);
+    const newMin = CURRENCY_CONFIG[code].min;
+    setAmount(newMin);
+    setAmountInput(String(newMin));
     setPaymentMethod('mpesa');
     setError('');
+    setCurrencyDropdownOpen(false);
+  };
+
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = parseInt(e.target.value);
+    setAmount(val);
+    setAmountInput(String(val));
+  };
+
+  const handleAmountInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/[^0-9]/g, '');
+    setAmountInput(raw);
+    const num = parseInt(raw);
+    if (!isNaN(num)) {
+      const clamped = Math.min(Math.max(num, config.min), config.max);
+      setAmount(clamped);
+    }
+  };
+
+  const handleAmountInputBlur = () => {
+    const num = parseInt(amountInput);
+    if (isNaN(num) || num < config.min) {
+      setAmount(config.min);
+      setAmountInput(String(config.min));
+    } else if (num > config.max) {
+      setAmount(config.max);
+      setAmountInput(String(config.max));
+    } else {
+      setAmount(num);
+      setAmountInput(String(num));
+    }
+  };
+
+  const handlePresetClick = (val: number) => {
+    setAmount(val);
+    setAmountInput(String(val));
   };
 
   const handleMethodSelect = (methodId: string) => {
     setPaymentMethod(methodId);
     
     if (methodId === 'mpesa') {
-      // Attempt M-Pesa deep link (simulated for common patterns)
       const businessNo = "303030";
       const accountNo = "UGC9#fundedfutures";
       const mpesaUrl = `mpesa://paybill?business=${businessNo}&account=${accountNo}&amount=${amount}`;
-      
-      // We try to open the app, but immediately show instructions as a fallback
-      // Most browsers will ignore invalid schemes without erroring the script
       try {
         window.location.href = mpesaUrl;
       } catch (e) {
@@ -373,47 +428,87 @@ export default function Donate() {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           <div className="lg:col-span-7 space-y-8">
-            {/* Currency Selector */}
-            <div className="bg-white p-8 rounded-[3rem] border border-gray-100">
-              <label className="block text-xs font-bold uppercase tracking-widest text-muted-text mb-6">Preferred Currency</label>
-              <div className="flex gap-4">
-                {Object.keys(CURRENCY_CONFIG).map((code) => (
-                  <button
-                    key={code}
-                    onClick={() => handleCurrencyChange(code)}
-                    className={`flex-1 flex flex-col items-center gap-2 p-5 rounded-3xl border-2 transition-all ${
-                      currencyCode === code ? 'border-forest-green bg-forest-green/5' : 'border-gray-50 bg-gray-50/50 hover:border-gray-200'
-                    }`}
+
+            {/* Currency Selector — Dropdown */}
+            <div className="bg-white p-8 rounded-[3rem] border border-gray-100 relative">
+              <label className="block text-xs font-bold uppercase tracking-widest text-muted-text mb-4">Preferred Currency</label>
+              <button
+                onClick={() => setCurrencyDropdownOpen(!currencyDropdownOpen)}
+                className="w-full flex items-center justify-between px-6 py-4 bg-snow rounded-2xl border-2 border-transparent hover:border-forest-green/20 transition-all font-bold"
+              >
+                <span className="flex items-center gap-3 text-lg">
+                  <span>{config.flag}</span>
+                  <span>{currencyCode}</span>
+                  <span className="text-muted-text font-normal text-sm">— {config.name}</span>
+                </span>
+                <ChevronDown size={18} className={`text-forest-green transition-transform ${currencyDropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              <AnimatePresence>
+                {currencyDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    className="absolute left-8 right-8 top-full mt-2 bg-white rounded-2xl border border-gray-100 shadow-xl z-50 overflow-hidden"
                   >
-                    <span className="text-3xl">{CURRENCY_CONFIG[code].flag}</span>
-                    <span className="font-bold text-sm">{code}</span>
-                  </button>
-                ))}
-              </div>
+                    {Object.entries(CURRENCY_CONFIG).map(([code, cfg]) => (
+                      <button
+                        key={code}
+                        onClick={() => handleCurrencyChange(code)}
+                        className={`w-full flex items-center gap-3 px-6 py-4 text-left hover:bg-forest-green/5 transition-colors font-medium ${code === currencyCode ? 'bg-forest-green/5 text-forest-green' : 'text-deep-slate'}`}
+                      >
+                        <span className="text-xl">{cfg.flag}</span>
+                        <span className="font-bold">{code}</span>
+                        <span className="text-muted-text text-sm font-normal">— {cfg.name}</span>
+                        {code === currencyCode && <CheckCircle2 size={16} className="ml-auto text-forest-green" />}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Donation Amount */}
             <div className="bg-white p-10 rounded-[3rem] border border-gray-100">
-              <div className="text-center mb-10 h-32 flex flex-col justify-center">
-                <div className="text-6xl md:text-7xl font-display font-bold text-deep-slate mb-2">
-                  <span className="text-forest-green opacity-30">{config.symbol}</span> {amount.toLocaleString()}
+              
+              {/* Manual Amount Input */}
+              <div className="mb-8">
+                <label className="block text-xs font-bold uppercase tracking-widest text-muted-text mb-3">Enter Amount</label>
+                <div className="flex items-center gap-3 bg-snow rounded-2xl px-6 py-4 border-2 border-transparent focus-within:border-forest-green/30 transition-all">
+                  <span className="text-forest-green font-bold text-lg opacity-60">{config.symbol}</span>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    value={amountInput}
+                    onChange={handleAmountInputChange}
+                    onBlur={handleAmountInputBlur}
+                    className="flex-1 bg-transparent outline-none font-bold text-2xl text-deep-slate placeholder:text-muted-text/30"
+                    placeholder={String(config.min)}
+                  />
+                  <span className="text-muted-text text-xs font-bold uppercase tracking-widest">{currencyCode}</span>
                 </div>
-                <div className="min-h-[3rem]">
-                  <AnimatePresence mode="wait">
-                    {activeMilestone && (
-                      <motion.p
-                        key={`${currencyCode}-${activeMilestone.threshold}`}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.6, ease: "easeOut" }}
-                        className="text-forest-green font-display italic text-xl leading-relaxed px-6"
-                      >
-                        "{activeMilestone.message}"
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </div>
+                <p className="text-[10px] text-muted-text mt-2 ml-2 font-medium">
+                  Min: {config.symbol}{config.min.toLocaleString()} — Max: {config.symbol}{config.max.toLocaleString()}
+                </p>
+              </div>
+
+              {/* Milestone message */}
+              <div className="text-center mb-8 min-h-[3rem] flex items-center justify-center">
+                <AnimatePresence mode="wait">
+                  {activeMilestone && (
+                    <motion.p
+                      key={`${currencyCode}-${activeMilestone.threshold}`}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      transition={{ duration: 0.6, ease: "easeOut" }}
+                      className="text-forest-green font-display italic text-lg leading-relaxed px-4"
+                    >
+                      "{activeMilestone.message}"
+                    </motion.p>
+                  )}
+                </AnimatePresence>
               </div>
 
               <div className="space-y-8">
@@ -423,14 +518,16 @@ export default function Donate() {
                   max={config.max}
                   step={config.step}
                   value={amount}
-                  onChange={(e) => setAmount(parseInt(e.target.value))}
+                  onChange={handleSliderChange}
                   className="w-full h-3 bg-snow rounded-full appearance-none cursor-pointer accent-forest-green"
                 />
-                <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 pt-6">
+
+                {/* Preset buttons */}
+                <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 pt-2">
                   {config.presets.map((p) => (
                     <button
                       key={p}
-                      onClick={() => setAmount(p)}
+                      onClick={() => handlePresetClick(p)}
                       className={`py-3 rounded-2xl border-2 font-bold transition-all text-sm ${
                         amount === p ? 'bg-forest-green border-forest-green text-white' : 'border-gray-50 bg-gray-50 text-muted-text hover:border-gray-200'
                       }`}
@@ -478,6 +575,7 @@ export default function Donate() {
             </div>
           </div>
 
+          {/* Checkout Summary */}
           <aside className="lg:col-span-5 space-y-8 sticky top-36">
             <div className="bg-deep-slate text-snow p-10 rounded-[3rem] relative overflow-hidden">
               <div className="relative z-10 space-y-10">
@@ -519,7 +617,9 @@ export default function Donate() {
                 <div className="pt-10 border-t border-white/10">
                   <div className="flex justify-between items-end mb-8">
                     <span className="text-sm font-medium opacity-60">Total Donation</span>
-                    <span className="text-4xl font-display font-bold text-forest-green">{amount.toLocaleString()} {currencyCode}</span>
+                    <span className="text-4xl font-display font-bold text-forest-green">
+                      {config.symbol}{amount.toLocaleString()}
+                    </span>
                   </div>
 
                   {error && (
