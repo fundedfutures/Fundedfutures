@@ -48,7 +48,7 @@ export default function HowItWorks_Identify() {
 
             <div className="space-y-8">
               {[
-                { icon: <Users size={20} />, title: "Community Referrals", desc: "We work with local village elders and school teachers who know the families personally." },
+                { icon: <Users size={20} />, title: "Community Referrals", desc: "We work with local community leaders and school teachers who know the families personally." },
                 { icon: <Target size={20} />, title: "Needs Assessment", desc: "Our team conducts home visits to understand the living conditions and financial background of each applicant." },
                 { icon: <CheckCircle size={20} />, title: "Merit Verification", desc: "We look for students who have shown a consistent commitment to their education despite their circumstances." }
               ].map((item, idx) => (
