@@ -109,7 +109,7 @@ export default function Programs() {
             
             <Button 
               variant="muted" 
-              className="bg-snow text-forest-green hover:bg-snow/90 px-10 py-5 rounded-full"
+              className="bg-white text-forest-green hover:bg-white/90 px-10 py-5 rounded-full font-bold"
               onClick={() => navigate('/donate')}
             >
               Support Our Mission
