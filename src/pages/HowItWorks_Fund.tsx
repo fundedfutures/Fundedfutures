@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Wallet, PieChart, ShieldCheck, Zap, ArrowRight } from 'lucide-react';
+import { ArrowLeft, Wallet, ShieldCheck, Zap, ArrowRight } from 'lucide-react';
 import { Button } from '../components/UI';
 
 export default function HowItWorks_Fund() {
@@ -47,28 +47,18 @@ export default function HowItWorks_Fund() {
             </div>
 
             <div className="bg-white p-10 rounded-[3rem] border border-gray-100 flex flex-col items-center text-center space-y-6">
-              <PieChart size={120} className="text-forest-green mb-4" />
+              <Wallet size={64} className="text-forest-green mb-2" />
               <h3 className="text-2xl font-bold">100% Direct Education Support</h3>
-              <p className="opacity-70">
-                School Fees • Uniforms • Books • Stationery • Mentorship
+              <p className="opacity-70 leading-relaxed">
+                Every donation goes directly toward a student's educational needs — from school fees to materials.
               </p>
-              <div className="pt-4 grid grid-cols-2 gap-4 w-full">
-                <div className="p-4 bg-snow rounded-2xl">
-                  <span className="block text-2xl font-display font-bold text-forest-green">85%</span>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-muted-text">Tuition Fees</span>
-                </div>
-                <div className="p-4 bg-snow rounded-2xl">
-                  <span className="block text-2xl font-display font-bold text-forest-green">15%</span>
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-muted-text">Materials & Support</span>
-                </div>
-              </div>
             </div>
           </div>
 
           <div className="space-y-10 pt-10">
             {[
-              { icon: <ShieldCheck size={24} />, title: "Zero Fee Deduction", desc: "We cover our administrative costs through separate grants, not your student donations." },
-              { icon: <Zap size={24} />, title: "Real-Time Allocation", desc: "Funds are allocated to specific students instantly upon donation confirmation." },
+              { icon: <ShieldCheck size={24} />, title: "Your Donation Reaches Students", desc: "We are committed to ensuring your donation reaches students directly." },
+              { icon: <Zap size={24} />, title: "Timely Allocation", desc: "Funds are allocated to specific students upon confirmation of receipt." },
               { icon: <Wallet size={24} />, title: "Direct School Payments", desc: "Money is wired directly to the educational institution, never handled by the student's family." }
             ].map((item, idx) => (
               <motion.div 
