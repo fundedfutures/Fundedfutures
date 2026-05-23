@@ -310,7 +310,7 @@ function Home() {
                 Education is a fundamental right, yet for thousands of students across Kenya, financial barriers make schooling an impossible dream. fundED futures was born from a simple belief: that poverty should never be a barrier to potential.
               </p>
               <p className="text-base md:text-lg leading-relaxed opacity-90">
-                We work directly with community leaders and local schools to identify high-potential students in marginalized areas, providing not just school fees, but the uniforms, books, and psychological support they need to thrive.
+               providing not just school fees, but the uniforms, books, and materials they need to thrive.
               </p>
               <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
                 <Button 
@@ -362,7 +362,7 @@ function Home() {
               {[
                 { step: '01', title: 'We Identify', desc: 'We locate students in need across Kenya through our network of educators and village elders.', icon: <Globe className="text-forest-green" />, to: '/how-it-works/identify' },
                 { step: '02', title: 'We Fund', desc: 'Direct payments for school fees, materials, and health insurance ensure every cent goes to the student.', icon: <Heart className="text-forest-green" />, to: '/how-it-works/fund' },
-                { step: '03', title: 'We Follow Through', desc: 'We track academic progress and provide mentoring through university and early career stages.', icon: <GraduationCap className="text-forest-green" />, to: '/how-it-works/follow-through' },
+                { step: '03', title: 'We Follow Through', desc: ''We track academic progress and provide mentoring through their academic journey and beyond.'.', icon: <GraduationCap className="text-forest-green" />, to: '/how-it-works/follow-through' },
               ].map((item, idx) => (
                 <Card 
                   key={idx}
