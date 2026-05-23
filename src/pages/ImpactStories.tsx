@@ -50,7 +50,7 @@ const stories = [
     age: 16,
     grade: "Form 3",
     location: "Kangemi",
-    story: "Hope ~At sixteen, Hope carries a weight that would break most adults, navigating a life that has been stripped of its foundation in a devastatingly short time. After the consecutive losses of his father and brother, his family's remaining stability vanished when his mother lost her employment, leaving him stuck at home and unable to attend Form 3 due to unpaid school fees. Despite the profound psychological toll of his grief and the precarious nature of his living conditions, Hope's intellectual light remains undimmed; he recently ranked 7th out of 49 students, a testament to his resilience in the face of absolute hardship. Referred to us by a neighbor who understands the sting of poverty, Hope is driven by a singular, selfless ambition: to master the world of IT so he can become the provider his family so desperately needs. He is a young man of immense potential standing at a crossroads, needing only the bridge of financial support to turn his academic brilliance into a career that can lift his mother out of despair.",
+    story: "Hope — At sixteen, Hope carries a weight that would break most adults, navigating a life that has been stripped of its foundation in a devastatingly short time. After the consecutive losses of his father and brother, his family's remaining stability vanished when his mother lost her employment, leaving him stuck at home and unable to attend Form 3 due to unpaid school fees. Despite the profound psychological toll of his grief and the precarious nature of his living conditions, Hope's intellectual light remains undimmed; he recently ranked 7th out of 49 students, a testament to his resilience in the face of absolute hardship. Referred to us by a neighbor who understands the sting of poverty, Hope is driven by a singular, selfless ambition: to master the world of IT so he can become the provider his family so desperately needs. He is a young man of immense potential standing at a crossroads, needing only the bridge of financial support to turn his academic brilliance into a career that can lift his mother out of despair.",
     image: "https://i.imgur.com/mCCRmmY.jpeg"
   }
 ];
@@ -80,12 +80,12 @@ export default function ImpactStories() {
             transition={{ duration: 0.6 }}
           >
             <h1 className="text-5xl md:text-7xl font-display font-bold mb-10 leading-tight">
-              Stories of <span className="text-forest-green">Impact</span>
+              Students We're <span className="text-forest-green">Fighting For</span>
             </h1>
             <div className="relative p-8 md:p-12 bg-frosted-blue/20 rounded-[3rem] border border-frosted-blue/30 overflow-hidden group">
               <Quote className="absolute -top-4 -left-4 w-24 h-24 text-frosted-blue/20 rotate-18" />
               <p className="text-2xl md:text-3xl text-deep-slate/90 leading-relaxed font-display italic relative z-10">
-                "Behind every statistic is a child with a name, a dream, and a story worth telling. These are just a few of the lives you help change when you choose to give."
+                "These are the students at the centre of our mission. Every donation brings us one step closer to reaching them."
               </p>
             </div>
           </motion.div>
@@ -159,7 +159,6 @@ export default function ImpactStories() {
               <p className="text-lg md:text-2xl font-bold text-snow leading-relaxed tracking-wide">
                 Every contribution transforms a <span className="text-forest-green">student's future</span>. Your gift reaches the <span className="text-frosted-blue">classroom directly</span>, creating lasting change in education and opportunity.
               </p>
-              {/* Reflection Effect removed */}
             </motion.div>
             
             <Button
