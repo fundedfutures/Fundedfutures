@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, BookOpen, GraduationCap, School, Globe, Zap, Heart } from 'lucide-react';
+import { ArrowLeft, BookOpen, Heart, Globe, GraduationCap } from 'lucide-react';
 import { Button, Card } from '../components/UI';
 
 const programs = [
@@ -10,21 +10,21 @@ const programs = [
     description: "Our flagship program provides holistic support for high-potential students. We cover tuition, uniforms, and provide a dedicated mentor to guide them through their academic journey.",
     icon: <GraduationCap className="w-8 h-8" />,
     color: "bg-forest-green",
-    details: ["Full Tuition Coverage", "Mentorship pairing", "Leadership training"]
+    detail: "We provide students with direct funding to cover school fees, uniforms, books, textbooks, and transport."
   },
   {
     title: "School Fee Support",
     description: "Crisis funding for students at risk of being sent home due to temporary family financial struggles. We step in to bridge the gap and keep their seats in the classroom.",
     icon: <Heart className="w-8 h-8" />,
     color: "bg-frosted-blue",
-    details: ["Emergency fee clearing", "Direct school payments", "Fast-track verification"]
+    detail: "Emergency funding for students at risk of being sent home, covering what they need to stay in class."
   },
   {
     title: "Educational Resources",
-    description: "Ensuring students have the tools they need to succeed. We provide textbooks, digital learning devices, and school supplies to marginalized communities.",
+    description: "Ensuring students have the tools they need to succeed. We provide textbooks, learning materials, and school supplies to marginalized communities.",
     icon: <BookOpen className="w-8 h-8" />,
     color: "bg-deep-slate",
-    details: ["Textbook distribution", "Digital literacy kits", "Study materials"]
+    detail: "Funding for the essential materials a student needs to learn — books, textbooks, and supplies."
   }
 ];
 
@@ -83,18 +83,12 @@ export default function Programs() {
                 {prog.icon}
               </div>
               <h3 className="text-2xl font-display font-bold mb-6 text-deep-slate">{prog.title}</h3>
-              <p className="text-deep-slate/70 mb-10 leading-relaxed flex-grow">
+              <p className="text-deep-slate/70 mb-8 leading-relaxed flex-grow">
                 {prog.description}
               </p>
-              
-              <ul className="space-y-4 mb-4">
-                {prog.details.map((detail, i) => (
-                  <li key={i} className="flex items-center gap-3 text-sm font-bold text-deep-slate/80">
-                    <div className="w-1.5 h-1.5 rounded-full bg-forest-green" />
-                    {detail}
-                  </li>
-                ))}
-              </ul>
+              <p className="text-sm font-semibold text-deep-slate/80 leading-relaxed border-t border-gray-100 pt-6">
+                {prog.detail}
+              </p>
             </Card>
           ))}
         </motion.div>
@@ -109,7 +103,7 @@ export default function Programs() {
           <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
             <Globe className="w-16 h-16 mb-8 text-frosted-blue opacity-80" />
             <h2 className="text-3xl md:text-5xl font-display font-bold mb-8 italic">
-              "Currently operating across Africa with plans to expand our impact globally."
+              "Based in Kenya, with a vision to grow our impact globally."
             </h2>
             <div className="w-24 h-1 bg-frosted-blue/30 rounded-full mb-12" />
             
