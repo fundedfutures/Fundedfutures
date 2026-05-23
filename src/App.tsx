@@ -362,7 +362,7 @@ function Home() {
               {[
                 { step: '01', title: 'We Identify', desc: 'We locate students in need across Kenya through our network of educators and village elders.', icon: <Globe className="text-forest-green" />, to: '/how-it-works/identify' },
                 { step: '02', title: 'We Fund', desc: 'Direct payments for school fees, materials, and health insurance ensure every cent goes to the student.', icon: <Heart className="text-forest-green" />, to: '/how-it-works/fund' },
-                { step: '03', title: 'We Follow Through', desc: ''We track academic progress and provide mentoring through their academic journey and beyond.'.', icon: <GraduationCap className="text-forest-green" />, to: '/how-it-works/follow-through' },
+                { step: '03', title: 'We Follow Through', desc: 'We track academic progress and provide mentoring through their academic journey and beyond.', icon: <GraduationCap className="text-forest-green" />, to: '/how-it-works/follow-through' },
               ].map((item, idx) => (
                 <Card 
                   key={idx}
