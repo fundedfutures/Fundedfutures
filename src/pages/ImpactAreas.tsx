@@ -7,10 +7,6 @@ import {
   Users, 
   Scale, 
   BookOpen, 
-  ShieldCheck, 
-  UserCheck, 
-  HandMetal, 
-  Briefcase, 
   X
 } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -19,19 +15,19 @@ import { Button } from '../components/UI';
 const impactAreas = [
   {
     title: "Access to Education",
-    description: "Expanding access to education for marginalized children across all partner countries.",
+    description: "Expanding access to education for marginalized children across communities in Kenya.",
     icon: <Globe size={32} />,
     image: "https://images.unsplash.com/photo-1542810634-71277d95dcbb?q=80&w=2022&auto=format&fit=crop"
   },
   {
     title: "Early Learning",
-    description: "Supporting countries to improve access and quality learning for all children in the early years.",
+    description: "Supporting communities in Kenya to improve access and quality learning for all children in the early years.",
     icon: <Baby size={32} />,
     image: "https://i.imgur.com/fXTrPWb.jpeg"
   },
   {
     title: "Gender Equality",
-    description: "Committed to ensuring all girls and boys have the same opportunities for education.",
+    description: "Committed to ensuring all girls and boys in communities in Kenya have the same opportunities for education.",
     icon: <Users size={32} />,
     image: "https://i.imgur.com/9OnvAiN.jpeg"
   },
@@ -43,33 +39,15 @@ const impactAreas = [
   },
   {
     title: "Learning",
-    description: "Helping millions more children learn the essential skills they need to thrive in the 21st century.",
+    description: "Helping millions more children in communities in Kenya learn the essential skills they need to thrive in the 21st century.",
     icon: <BookOpen size={32} />,
     image: "https://i.imgur.com/7zkUXXt.jpeg"
   },
   {
-    title: "Peace and Security",
-    description: "Quality education for all is one of the best investments to counter political, economic and displacement risks.",
-    icon: <ShieldCheck size={32} />,
-    image: "https://i.imgur.com/CD6oHZE.jpeg"
-  },
-  {
-    title: "Quality Teaching",
-    description: "Investing in quality teachers and teaching to improve student learning.",
-    icon: <UserCheck size={32} />,
-    image: "https://i.imgur.com/5zETtAj.jpeg"
-  },
-  {
     title: "Safe Learning",
-    description: "Addressing violence in and around schools that affects children's learning, safety, and school attendance worldwide.",
-    icon: <HandMetal size={32} />,
+    description: "Addressing violence in and around schools that affects children's learning, safety, and school attendance.",
+    icon: <Scale size={32} />,
     image: "https://i.imgur.com/TMBfL75.jpeg"
-  },
-  {
-    title: "Skills for Jobs",
-    description: "Children need skills including creativity, problem-solving and collaboration to develop fully and enter the modern workforce.",
-    icon: <Briefcase size={32} />,
-    image: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=2071&auto=format&fit=crop"
   }
 ];
 
@@ -97,7 +75,7 @@ export default function ImpactAreas() {
         >
           <h1 className="text-4xl md:text-6xl font-display font-bold mb-6 text-deep-slate">Impact Areas</h1>
           <p className="text-lg md:text-xl text-muted-text max-w-3xl leading-relaxed">
-            Our focus areas represent the most critical challenges and opportunities in global education. By addressing these key sectors, we ensure a holistic approach to student success and community development.
+            Our focus areas represent the most critical challenges and opportunities in education across communities in Kenya. By addressing these key sectors, we ensure a holistic approach to student success and community development.
           </p>
         </motion.div>
 
