@@ -7,7 +7,7 @@ import { Button, Card } from '../components/UI';
 const programs = [
   {
     title: "Student Education Sponsorship",
-    description: "Our flagship program provides holistic support for high-potential students. We cover tuition, uniforms, and provide a dedicated mentor to guide them through their academic journey.",
+    description: "Our flagship program provides direct financial support for high-potential students facing financial barriers. We cover school fees, uniforms, books, and the essential materials they need to stay in school and keep learning.",
     icon: <GraduationCap className="w-8 h-8" />,
     color: "bg-forest-green",
     detail: "We provide students with direct funding to cover school fees, uniforms, books, textbooks, and transport."
