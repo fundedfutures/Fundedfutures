@@ -14,6 +14,8 @@ import {
 } from 'lucide-react';
 import { Button, Card } from '../components/UI';
 
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyAIuCzqnqVKmSFDA4PL6QN65XsnmQ6Xhmdbh5nAbBO7Tov_vdHXKjlaoe8lJldciUC/exec";
+
 const PAYMENT_METHODS = [
   { 
     id: 'mpesa', 
@@ -303,6 +305,7 @@ export default function Donate() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
   const [donorName, setDonorName] = useState('');
+  const [donorEmail, setDonorEmail] = useState('');
   const [confirmationCode, setConfirmationCode] = useState('');
 
   const config = CURRENCY_CONFIG[currencyCode];
@@ -376,17 +379,36 @@ export default function Donate() {
     setError('');
   };
 
-  const handleDonate = () => {
-    if (!confirmationCode || confirmationCode.length < 5) {
+  const handleDonate = async () => {
+    if (!confirmationCode || confirmationCode.trim().length < 5) {
       setError('A valid confirmation code is mandatory to track your donation.');
       return;
     }
     setError('');
     setIsProcessing(true);
-    setTimeout(() => {
-      setIsProcessing(false);
-      navigate('/thank-you');
-    }, 2500);
+
+    try {
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Apps Script requires no-cors from browser
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          donorName: donorName.trim() || 'Anonymous',
+          donorEmail: donorEmail.trim(),
+          amount,
+          currency: currencyCode,
+          confirmationCode: confirmationCode.trim().toUpperCase(),
+          timestamp: new Date().toISOString(),
+        }),
+      });
+      // no-cors means we can't read the response, but the script still receives it
+    } catch (err) {
+      // Silently fail — don't block the donor from the thank-you page
+      console.error('Logging error:', err);
+    }
+
+    setIsProcessing(false);
+    navigate('/thank-you');
   };
 
   return (
@@ -588,6 +610,7 @@ export default function Donate() {
                 </div>
 
                 <div className="space-y-6">
+                  {/* Donor Name */}
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold uppercase tracking-widest opacity-50">Your Name (Optional)</label>
                     <input 
@@ -598,7 +621,26 @@ export default function Donate() {
                       onChange={(e) => setDonorName(e.target.value)}
                     />
                   </div>
+
+                  {/* Donor Email — NEW */}
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold uppercase tracking-widest opacity-50 flex items-center justify-between">
+                      Email Address
+                      <span className="text-forest-green text-[9px] px-2 py-0.5 bg-forest-green/10 rounded-full">For receipt</span>
+                    </label>
+                    <input 
+                      type="email"
+                      placeholder="e.g. john@email.com"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:border-forest-green/50 transition-all font-medium text-snow placeholder:text-white/20"
+                      value={donorEmail}
+                      onChange={(e) => setDonorEmail(e.target.value)}
+                    />
+                    <p className="text-[10px] text-white/30 font-medium ml-1">
+                      You'll receive a thank-you email and bi-annual updates.
+                    </p>
+                  </div>
                   
+                  {/* Confirmation Code */}
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold uppercase tracking-widest opacity-50 flex items-center justify-between">
                       Confirmation Code
@@ -611,6 +653,9 @@ export default function Donate() {
                       value={confirmationCode}
                       onChange={(e) => setConfirmationCode(e.target.value)}
                     />
+                    <p className="text-[10px] text-white/30 font-medium ml-1">
+                      e.g. UEG2Y4M57P — found in your M-PESA SMS
+                    </p>
                   </div>
                 </div>
 
