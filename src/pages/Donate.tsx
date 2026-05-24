@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { Button, Card } from '../components/UI';
 
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyAIuCzqnqVKmSFDA4PL6QN65XsnmQ6Xhmdbh5nAbBO7Tov_vdHXKjlaoe8lJldciUC/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxvKet1fJYxLHm8GShvLuZLxsx3rP5T0snZuz2aDh02dJPKLRgjcxIR_ETk8-nInC5j/exec";
 
 const PAYMENT_METHODS = [
   { 
