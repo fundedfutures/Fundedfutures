@@ -5,12 +5,12 @@ import { ArrowLeft, Heart, Target, Users, Globe, BookOpen, TrendingUp, CheckCirc
 import { Button } from '../components/UI';
 
 const teamMembers = [
+  { name: "Xavi", role: "Technology & Operations", desc: "Oversees technology infrastructure and coordinates department workflows" },
   { name: "Kagiri", role: "Church Partnerships", desc: "Oversees relations with Saint Austin's" },
   { name: "Joshua", role: "Church Partnerships", desc: "Oversees Saint John the Evangelist Karen" },
   { name: "Nicole", role: "Church Partnerships", desc: "Oversees CITAM Valley Road" },
   { name: "Aidan", role: "Finance & Reporting", desc: "Controls finances and tracks all incoming donations" },
   { name: "Nelson", role: "Social Media & Marketing", desc: "Ensures wide brand reach and accessibility" },
-  { name: "Xavi", role: "Technology & Operations", desc: "Oversees technology infrastructure and coordinates department workflows" },
   { name: "Kyle", role: "Human Resources", desc: "Interviews and onboards new volunteers" },
 ];
 
@@ -227,7 +227,7 @@ export default function AboutOurStory() {
                 <span className="font-bold text-lg block">Austin Muniu</span>
                 <span className="text-xs text-white/70 uppercase tracking-widest font-bold">Founder</span>
               </div>
-              <p className="text-sm text-white/80 leading-relaxed">Overall oversight and running of the project — the vision holder who set everything in motion.</p>
+              <p className="text-sm text-white/80 leading-relaxed">Overall oversight and running of the project the vision holder who set everything in motion.</p>
             </motion.div>
 
             {teamMembers.map((member, idx) => (
