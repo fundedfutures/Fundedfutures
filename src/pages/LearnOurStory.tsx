@@ -224,7 +224,7 @@ export default function AboutOurStory() {
                 <BookOpen size={22} />
               </div>
               <div>
-                <span className="font-bold text-lg block">Project Manager</span>
+                <span className="font-bold text-lg block">Austin Muniu</span>
                 <span className="text-xs text-white/70 uppercase tracking-widest font-bold">Founder</span>
               </div>
               <p className="text-sm text-white/80 leading-relaxed">Overall oversight and running of the project — the vision holder who set everything in motion.</p>
