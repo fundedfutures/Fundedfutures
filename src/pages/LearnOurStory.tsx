@@ -59,7 +59,7 @@ export default function AboutOurStory() {
             transition={{ delay: 0.4 }}
             className="mt-8 text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed"
           >
-            A student-led initiative born from a single charity visit — and a conviction that privilege carries responsibility.
+            A student-led initiative born from a single charity visit and a conviction that privilege carries responsibility.
           </motion.p>
         </div>
       </section>
@@ -83,10 +83,10 @@ export default function AboutOurStory() {
             className="space-y-6 max-w-3xl"
           >
             <h2 className="text-4xl md:text-5xl font-display font-bold leading-tight">
-              It started with a charity visit — and a moment of <i>reckoning.</i>
+              It started with a charity visit and a moment of <i>reckoning.</i>
             </h2>
             <p className="text-xl text-muted-text leading-relaxed">
-              A few years ago, our founder went on a charity visit with their school. Seeing the conditions these children were living in — despite their joy — made one thing undeniably clear: the opportunity to learn, to grow, to simply be in a classroom, is not equally distributed. That moment planted the seed.
+              A few years ago, our founder went on a charity visit with their school. Seeing the conditions these children were living indespite their joy made one thing undeniably clear: the opportunity to learn, to grow, to simply be in a classroom, is not equally distributed. That moment planted the seed.
             </p>
             <p className="text-xl text-muted-text leading-relaxed">
               That is why, this year, FundED Futures was born.
@@ -150,7 +150,7 @@ export default function AboutOurStory() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {[
-              { icon: <Heart size={22} />, title: "Radical Empathy", desc: "We place ourselves in the shoes of the families we serve — every decision starts there." },
+              { icon: <Heart size={22} />, title: "Radical Empathy", desc: "We place ourselves in the shoes of the families we serve every decision starts there." },
               { icon: <Target size={22} />, title: "Precision Impact", desc: "Every shilling is tracked and verified for maximum efficacy. No middle-man, no cash handling by parents." },
               { icon: <Users size={22} />, title: "Community Wisdom", desc: "We don't impose solutions; we listen to local leaders and community voices first." },
               { icon: <Globe size={22} />, title: "Global Responsibility", desc: "Empowering one child in Kenya strengthens the global future. Local action, global consequence." },
@@ -208,7 +208,7 @@ export default function AboutOurStory() {
           >
             <h2 className="text-4xl md:text-5xl font-display font-bold">Meet the Team</h2>
             <p className="text-lg text-muted-text max-w-2xl leading-relaxed">
-              Eight students. Equal ownership. One shared mission. Work has been delegated fairly across the group — and each member brings a unique piece to the puzzle.
+              Eight students. Equal ownership. One shared mission. Work has been delegated fairly across the group and each member brings a unique piece to the puzzle.
             </p>
           </motion.div>
 
@@ -258,7 +258,7 @@ export default function AboutOurStory() {
             Join us in <br /><i>Funding the Future.</i>
           </h2>
           <p className="text-xl text-muted-text max-w-xl mx-auto">
-            Whether you donate, volunteer, or share our story — you are part of the solution.
+            Whether you donate, volunteer, or share our story you are part of the solution.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
             <Button variant="primary" className="w-full sm:w-auto px-12" onClick={() => navigate('/donate')}>
