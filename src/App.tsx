@@ -75,7 +75,7 @@ function NavDropdown({
       );
     }
     return (
-      
+      <a
         key={idx}
         href={item.href}
         className={itemClass}
@@ -166,7 +166,7 @@ function Home() {
               Home
             </Link>
 
-            
+            <a
               href="/#our-mission"
               className="flex-1 text-center font-medium hover:text-forest-green transition-colors py-3"
             >
@@ -182,7 +182,7 @@ function Home() {
               ]}
             />
 
-            
+            <a
               href="/#get-involved"
               className="flex-1 text-center font-medium hover:text-forest-green transition-colors py-3"
             >
@@ -233,7 +233,7 @@ function Home() {
                   Home
                 </Link>
 
-                
+                <a
                   href="/#our-mission"
                   className="text-lg font-medium"
                   onClick={() => setIsMenuOpen(false)}
@@ -684,7 +684,7 @@ function Home() {
               </p>
               <div className="flex gap-4">
                 {[Twitter, Instagram, Facebook, Music].map((Icon, i) => (
-                  
+                  <a
                     key={i}
                     href="#"
                     className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-forest-green transition-colors"
