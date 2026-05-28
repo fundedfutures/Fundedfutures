@@ -43,7 +43,7 @@ import ScrollToTop from './components/ScrollToTop';
 import { ContactProvider, useContact } from './context/ContactContext';
 import { Button, SectionHeader, Card } from './components/UI';
 
-// ─── NavDropdown ────────────────────────────────────────────────────────────
+// ─── NavDropdown ─────────────────────────────────────────────────────────────
 
 type NavItem = { label: string; to?: string; href?: string };
 
@@ -117,7 +117,7 @@ function NavDropdown({
   );
 }
 
-// ─── Home ────────────────────────────────────────────────────────────────────
+// ─── Home ─────────────────────────────────────────────────────────────────────
 
 function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -144,6 +144,7 @@ function Home() {
 
   return (
     <div className="min-h-screen selection:bg-forest-green/30">
+
       {/* ── Navigation ── */}
       <nav
         className={`fixed top-0 w-full z-50 transition-smooth px-[5%] py-4 ${
