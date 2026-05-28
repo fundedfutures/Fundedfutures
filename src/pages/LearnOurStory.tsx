@@ -5,13 +5,13 @@ import { ArrowLeft, Heart, Target, Users, Globe, BookOpen, TrendingUp, CheckCirc
 import { Button } from '../components/UI';
 
 const teamMembers = [
-  { name: "Xavi", role: "Technology & Operations", desc: "Oversees technology infrastructure and coordinates department workflows" },
-  { name: "Kagiri", role: "Church Partnerships", desc: "Oversees relations with Saint Austin's" },
-  { name: "Joshua", role: "Church Partnerships", desc: "Oversees Saint John the Evangelist Karen" },
-  { name: "Nicole", role: "Church Partnerships", desc: "Oversees CITAM Valley Road" },
-  { name: "Aidan", role: "Finance & Reporting", desc: "Controls finances and tracks all incoming donations" },
-  { name: "Nelson", role: "Social Media & Marketing", desc: "Ensures wide brand reach and accessibility" },
-  { name: "Kyle", role: "Human Resources", desc: "Interviews and onboards new volunteers" },
+  { name: "Xavi Odumbe", role: "Technology & Operations", desc: "Oversees technology infrastructure and coordinates department workflows" },
+  { name: "Kagiri Gitahi", role: "Church Partnerships", desc: "Oversees relations with Saint Austin's" },
+  { name: "Nicole Matheka", role: "Church Partnerships & Marketing", desc: "Oversees Saint John the Evangelist Karen" },
+  { name: "Joshua Okumu", role: "Church Partnerships", desc: "Oversees CITAM Valley Road" },
+  { name: "Aidan Muiga", role: "Finance & Reporting", desc: "Controls finances and tracks all incoming donations" },
+  { name: "Nelson Onyango", role: "Social Media & Marketing", desc: "Ensures wide brand reach and accessibility" },
+  { name: "Kyle Kwena", role: "Profile & Wellness", desc: "Manages children's profiles and wellness" },
 ];
 
 const milestones = [
