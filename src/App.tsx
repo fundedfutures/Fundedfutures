@@ -77,7 +77,7 @@ const NavDropdown = ({ label, items, className }: { label: string, items: { labe
                   {item.label}
                 </Link>
               ) : (
-                <a
+                
                   key={idx}
                   href={item.href}
                   className="block px-6 py-3 text-sm hover:bg-forest-green/5 hover:text-forest-green transition-colors font-medium border-b border-gray-50 last:border-0"
@@ -134,7 +134,13 @@ function Home() {
           </a>
           
           <div className="hidden md:flex flex-1 ml-12 justify-between items-center bg-white/50 backdrop-blur-sm rounded-full px-2">
-            <Link to="/" className="flex-1 text-center font-medium hover:text-forest-green transition-colors py-3">Home</Link>
+            <Link
+              to="/"
+              className="flex-1 text-center font-medium hover:text-forest-green transition-colors py-3"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            >
+              Home
+            </Link>
             <a href="/#our-mission" className="flex-1 text-center font-medium hover:text-forest-green transition-colors py-3">Mission</a>
             
             <NavDropdown 
@@ -180,7 +186,16 @@ function Home() {
               className="md:hidden bg-white absolute top-full left-0 w-full overflow-hidden border-b border-gray-100"
             >
               <div className="flex flex-col p-6 gap-6">
-                <Link to="/" className="text-lg font-medium" onClick={() => setIsMenuOpen(false)}>Home</Link>
+                <Link
+                  to="/"
+                  className="text-lg font-medium"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                >
+                  Home
+                </Link>
                 <a href="/#our-mission" className="text-lg font-medium" onClick={() => setIsMenuOpen(false)}>Our Mission</a>
                 
                 <div className="space-y-3">
