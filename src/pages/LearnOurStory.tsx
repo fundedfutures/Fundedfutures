@@ -86,6 +86,7 @@ export default function LearnOurStory() {
               </p>
 
               
+              <a
                 href={`tel:${selectedMember.phone}`}
                 className="flex items-center gap-3 bg-forest-green/10 hover:bg-forest-green hover:text-white transition-colors rounded-xl px-5 py-3 text-forest-green font-bold text-sm w-full"
               >
