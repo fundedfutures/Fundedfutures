@@ -3,25 +3,25 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useInView } from 'motion/react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
-import { 
-  Menu, 
-  X, 
-  ArrowRight, 
-  Heart, 
-  Users, 
-  Globe, 
-  BookOpen, 
-  GraduationCap, 
-  HandHeart, 
+import {
+  Menu,
+  X,
+  ArrowRight,
+  Heart,
+  Users,
+  Globe,
+  BookOpen,
+  GraduationCap,
+  HandHeart,
   Share2,
   Instagram,
   Facebook,
   Twitter,
   Music,
-  ChevronDown
+  ChevronDown,
 } from 'lucide-react';
 import ImpactAreas from './pages/ImpactAreas';
 import Subscribe from './pages/Subscribe';
@@ -41,30 +41,60 @@ import FAQ from './pages/FAQ';
 import ContactPopup from './components/ContactPopup';
 import ScrollToTop from './components/ScrollToTop';
 import { ContactProvider, useContact } from './context/ContactContext';
-import { Button, Counter, SectionHeader, Card } from './components/UI';
+import { Button, SectionHeader, Card } from './components/UI';
 
-// --- Components ---
+// ─── NavDropdown ────────────────────────────────────────────────────────────
 
-const NavDropdown = ({
+type NavItem = { label: string; to?: string; href?: string };
+
+function NavDropdown({
   label,
   items,
   className,
 }: {
   label: string;
-  items: { label: string; to?: string; href?: string }[];
+  items: NavItem[];
   className?: string;
-}) => {
+}) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const itemClass =
+    'block px-6 py-3 text-sm hover:bg-forest-green/5 hover:text-forest-green transition-colors font-medium border-b border-gray-50 last:border-0';
+
+  function renderItem(item: NavItem, idx: number) {
+    if (item.to) {
+      return (
+        <Link
+          key={idx}
+          to={item.to}
+          className={itemClass}
+          onClick={() => setIsOpen(false)}
+        >
+          {item.label}
+        </Link>
+      );
+    }
+    return (
+      
+        key={idx}
+        href={item.href}
+        className={itemClass}
+        onClick={() => setIsOpen(false)}
+      >
+        {item.label}
+      </a>
+    );
+  }
 
   return (
     <div
-      className={`relative group ${className}`}
+      className={`relative group ${className ?? ''}`}
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
-      onClick={() => setIsOpen(!isOpen)}
+      onClick={() => setIsOpen((v) => !v)}
     >
       <button className="w-full font-medium hover:text-forest-green transition-colors flex items-center justify-center gap-1 py-2">
-        {label}{' '}
+        {label}
         <ChevronDown
           size={14}
           className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
@@ -79,38 +109,15 @@ const NavDropdown = ({
             exit={{ opacity: 0, y: 10 }}
             className="absolute top-full left-0 w-56 bg-white rounded-2xl border border-gray-100 overflow-hidden py-2"
           >
-            {items.map((item, idx) => {
-              if (item.to) {
-                return (
-                  <Link
-                    key={idx}
-                    to={item.to}
-                    className="block px-6 py-3 text-sm hover:bg-forest-green/5 hover:text-forest-green transition-colors font-medium border-b border-gray-50 last:border-0"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                );
-              }
-              return (
-                
-                  key={idx}
-                  href={item.href}
-                  className="block px-6 py-3 text-sm hover:bg-forest-green/5 hover:text-forest-green transition-colors font-medium border-b border-gray-50 last:border-0"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {item.label}
-                </a>
-              );
-            })}
+            {items.map(renderItem)}
           </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
-};
+}
 
-// --- Main App ---
+// ─── Home ────────────────────────────────────────────────────────────────────
 
 function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -123,14 +130,11 @@ function Home() {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
 
-    const cookieDismissed = localStorage.getItem('cookieDismissed');
-    if (!cookieDismissed) {
+    if (!localStorage.getItem('cookieDismissed')) {
       setTimeout(() => setShowCookiePopup(true), 1500);
     }
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const dismissCookie = () => {
@@ -140,7 +144,7 @@ function Home() {
 
   return (
     <div className="min-h-screen selection:bg-forest-green/30">
-      {/* Navigation */}
+      {/* ── Navigation ── */}
       <nav
         className={`fixed top-0 w-full z-50 transition-smooth px-[5%] py-4 ${
           isScrolled ? 'bg-snow/80 backdrop-blur-xl border-b border-gray-100' : 'bg-transparent'
@@ -151,6 +155,7 @@ function Home() {
             fund<span className="text-forest-green">ED</span> futures
           </a>
 
+          {/* Desktop nav */}
           <div className="hidden md:flex flex-1 ml-12 justify-between items-center bg-white/50 backdrop-blur-sm rounded-full px-2">
             <Link
               to="/"
@@ -159,6 +164,7 @@ function Home() {
             >
               Home
             </Link>
+
             
               href="/#our-mission"
               className="flex-1 text-center font-medium hover:text-forest-green transition-colors py-3"
@@ -181,6 +187,7 @@ function Home() {
             >
               Get Involved
             </a>
+
             <button
               onClick={openContact}
               className="flex-1 text-center font-medium hover:text-forest-green transition-colors py-3 cursor-pointer"
@@ -204,7 +211,7 @@ function Home() {
           </button>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile menu */}
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
@@ -224,6 +231,7 @@ function Home() {
                 >
                   Home
                 </Link>
+
                 
                   href="/#our-mission"
                   className="text-lg font-medium"
@@ -305,7 +313,7 @@ function Home() {
       </nav>
 
       <main>
-        {/* Hero Section */}
+        {/* ── Hero ── */}
         <section
           id="home"
           className="relative min-h-screen flex items-center justify-center overflow-hidden bg-off-white"
@@ -365,7 +373,7 @@ function Home() {
           />
         </section>
 
-        {/* Our Mission */}
+        {/* ── Our Mission ── */}
         <section id="our-mission" className="py-20 md:py-32 px-[5%] bg-[#f7fcfb]">
           <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
             <motion.div
@@ -394,8 +402,8 @@ function Home() {
               <h2 className="text-4xl md:text-6xl leading-tight">Our Mission</h2>
               <p className="text-base md:text-lg leading-relaxed opacity-90">
                 Education is a fundamental right, yet for thousands of students across Kenya,
-                financial barriers make schooling an impossible dream. fundED futures was born from a
-                simple belief: that poverty should never be a barrier to potential.
+                financial barriers make schooling an impossible dream. fundED futures was born from
+                a simple belief: that poverty should never be a barrier to potential.
               </p>
               <p className="text-base md:text-lg leading-relaxed opacity-90">
                 providing not just school fees, but the uniforms, books, and materials they need to
@@ -406,7 +414,7 @@ function Home() {
                   onClick={() => navigate('/impact-areas')}
                   className="flex items-center justify-center gap-4 bg-white !text-deep-slate border border-forest-green/10 !py-6 !rounded-[2rem] hover:bg-forest-green/5"
                 >
-                  <div className="w-10 h-10 bg-forest-green/10 rounded-full flex items-center justify-center text-forest-green group-hover:bg-forest-green group-hover:text-white transition-colors">
+                  <div className="w-10 h-10 bg-forest-green/10 rounded-full flex items-center justify-center text-forest-green">
                     <HandHeart size={20} />
                   </div>
                   <span className="font-bold text-base">Direct Impact</span>
@@ -415,7 +423,7 @@ function Home() {
                   onClick={() => navigate('/programs')}
                   className="flex items-center justify-center gap-4 bg-white !text-deep-slate border border-frosted-blue/20 !py-6 !rounded-[2rem] hover:bg-frosted-blue/10"
                 >
-                  <div className="w-10 h-10 bg-frosted-blue/20 rounded-full flex items-center justify-center text-frosted-blue group-hover:bg-frosted-blue group-hover:text-white transition-colors">
+                  <div className="w-10 h-10 bg-frosted-blue/20 rounded-full flex items-center justify-center text-frosted-blue">
                     <BookOpen size={20} />
                   </div>
                   <span className="font-bold text-base">View Our Programs</span>
@@ -425,7 +433,7 @@ function Home() {
           </div>
         </section>
 
-        {/* How It Works */}
+        {/* ── How It Works ── */}
         <section id="how-it-works" className="py-20 md:py-32 px-[5%] bg-white">
           <div className="max-w-7xl mx-auto">
             <SectionHeader
@@ -439,10 +447,7 @@ function Home() {
               viewport={{ once: true }}
               variants={{
                 hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { staggerChildren: 0.15 },
-                },
+                visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
               }}
               className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10"
             >
@@ -490,7 +495,7 @@ function Home() {
           </div>
         </section>
 
-        {/* Impact Stories */}
+        {/* ── Impact Stories ── */}
         <section id="impact" className="py-24 md:py-32 px-[5%] bg-snow">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
@@ -506,10 +511,7 @@ function Home() {
               viewport={{ once: true }}
               variants={{
                 hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { staggerChildren: 0.15 },
-                },
+                visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
               }}
               className="space-y-12"
             >
@@ -518,7 +520,7 @@ function Home() {
                   name: 'Favour',
                   age: '12',
                   story:
-                    "Favour is a young, intelligent girl with dreams of becoming a doctor, but those dreams need protecting now before it's too late. Despite everything, Favour consistently tops her class and stays within the top three, but mounting pressure at home threatens to chip away at those marks. keeping her in school is where it starts.",
+                    "Favour is a young, intelligent girl with dreams of becoming a doctor, but those dreams need protecting now before it's too late. Despite everything, Favour consistently tops her class and stays within the top three, but mounting pressure at home threatens to chip away at those marks. Keeping her in school is where it starts.",
                   image: 'https://i.imgur.com/mCCRmmY.jpeg',
                 },
                 {
@@ -541,7 +543,7 @@ function Home() {
                   className="p-0 border-green-50 flex flex-col md:flex-row !rounded-[3rem]"
                   onClick={() => navigate('/impact-stories')}
                 >
-                  <div className="md:w-1/3 lg:w-1/4 h-64 md:h-64 relative overflow-hidden">
+                  <div className="md:w-1/3 lg:w-1/4 h-64 relative overflow-hidden">
                     <img
                       src={item.image}
                       alt={item.name}
@@ -550,8 +552,7 @@ function Home() {
                     />
                     <div className="absolute inset-0 bg-forest-green/10 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-
-                  <div className="md:w-2/3 lg:w-3/4 p-8 md:p-12 flex flex-col justify-center relative">
+                  <div className="md:w-2/3 lg:w-3/4 p-8 md:p-12 flex flex-col justify-center">
                     <div className="flex items-center gap-3 mb-4">
                       <span className="w-8 h-[2px] bg-forest-green" />
                       <p className="text-forest-green font-bold text-sm tracking-widest uppercase">
@@ -569,14 +570,14 @@ function Home() {
             <div className="mt-20 flex flex-col sm:flex-row gap-6 justify-center items-center">
               <Button
                 variant="primary"
-                className="px-10 py-4 transition-all"
+                className="px-10 py-4"
                 onClick={() => navigate('/donate')}
               >
                 Help Change a Life
               </Button>
               <Button
                 variant="muted"
-                className="px-10 py-4 border-forest-green text-forest-green hover:bg-forest-green/5 transition-all font-bold rounded-full border-2"
+                className="px-10 py-4 border-forest-green text-forest-green hover:bg-forest-green/5 font-bold rounded-full border-2"
                 onClick={() => navigate('/impact-stories')}
               >
                 Discover Impact
@@ -585,7 +586,7 @@ function Home() {
           </div>
         </section>
 
-        {/* Get Involved */}
+        {/* ── Get Involved ── */}
         <section id="get-involved" className="py-24 px-[5%]">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -641,13 +642,12 @@ function Home() {
                 ))}
               </div>
             </div>
-
             <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
             <div className="absolute bottom-0 right-0 w-96 h-96 bg-forest-green/20 rounded-full blur-3xl translate-x-1/3 translate-y-1/3" />
           </motion.div>
         </section>
 
-        {/* Newsletter CTA */}
+        {/* ── Newsletter CTA ── */}
         <section className="pb-24 px-[5%] text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -670,7 +670,7 @@ function Home() {
         </section>
       </main>
 
-      {/* Footer */}
+      {/* ── Footer ── */}
       <footer id="contact" className="bg-deep-slate text-white pt-24 pb-12 px-[5%]">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-16 border-b border-white/10">
@@ -809,7 +809,7 @@ function Home() {
         </div>
       </footer>
 
-      {/* Cookie Popup */}
+      {/* ── Cookie popup ── */}
       <AnimatePresence>
         {showCookiePopup && (
           <motion.div
@@ -845,6 +845,8 @@ function Home() {
     </div>
   );
 }
+
+// ─── Router ──────────────────────────────────────────────────────────────────
 
 export default function App() {
   return (
