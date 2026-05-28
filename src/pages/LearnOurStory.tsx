@@ -1,17 +1,18 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Heart, Target, Users, Globe, BookOpen, TrendingUp, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Heart, Target, Users, Globe, BookOpen, TrendingUp, CheckCircle, X, Phone } from 'lucide-react';
 import { Button } from '../components/UI';
 
 const teamMembers = [
-  { name: "Xavi Odumbe", role: "Technology & Operations", desc: "Oversees technology infrastructure and coordinates department workflows" },
-  { name: "Kagiri Gitahi", role: "Church Partnerships", desc: "Oversees relations with Saint Austin's" },
-  { name: "Nicole Matheka", role: "Church Partnerships & Marketing", desc: "Oversees Saint John the Evangelist Karen" },
-  { name: "Joshua Okumu", role: "Church Partnerships", desc: "Oversees CITAM Valley Road" },
-  { name: "Aidan Muiga", role: "Finance & Reporting", desc: "Controls finances and tracks all incoming donations" },
-  { name: "Nelson Onyango", role: "Social Media & Marketing", desc: "Ensures wide brand reach and accessibility" },
-  { name: "Kyle Kwena", role: "Profile & Wellness", desc: "Manages children's profiles and wellness" },
+  { name: "Xavi Odumbe", role: "Technology & Operations", desc: "Oversees technology infrastructure and coordinates department workflows", phone: "0710640206" },
+  { name: "Kagiri Gitahi", role: "Church Partnerships", desc: "Oversees relations with Saint Austin's", phone: "0739821625" },
+  { name: "Nicole Matheka", role: "Church Partnerships & Marketing", desc: "Oversees Saint John the Evangelist Karen", phone: "0111664810" },
+  { name: "Joshua Okumu", role: "Church Partnerships", desc: "Oversees CITAM Valley Road", phone: "0769957357" },
+  { name: "Aidan Muiga", role: "Finance & Reporting", desc: "Controls finances and tracks all incoming donations", phone: "0710654482" },
+  { name: "Nelson Onyango", role: "Social Media & Marketing", desc: "Ensures wide brand reach and accessibility", phone: "0791006610" },
+  { name: "Kyle Kwena", role: "Profile & Wellness", desc: "Manages children's profiles and wellness", phone: "0701365334" },
+  { name: "Dylan Mungatta", role: "Relations Officer", desc: "Manages school and community relations", phone: "0722509803" },
 ];
 
 const milestones = [
@@ -23,9 +24,63 @@ const milestones = [
 
 export default function AboutOurStory() {
   const navigate = useNavigate();
+  const [selectedMember, setSelectedMember] = useState(null);
+
+  const allMembers = [
+    { name: "Austin Muniu", role: "Founder", desc: "Overall oversight and running of the project — the vision holder who set everything in motion.", phone: "0785669667" },
+    ...teamMembers,
+  ];
 
   return (
     <div className="min-h-screen bg-snow text-deep-slate font-body overflow-x-hidden">
+
+      {/* ── Member Popup ── */}
+      <AnimatePresence>
+        {selectedMember && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[200]"
+              onClick={() => setSelectedMember(null)}
+            />
+            {/* Modal */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[210] w-[90%] max-w-sm bg-white rounded-[2rem] p-8 border border-gray-100"
+            >
+              <button
+                onClick={() => setSelectedMember(null)}
+                className="absolute top-5 right-5 w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center hover:bg-forest-green hover:text-white transition-colors"
+              >
+                <X size={16} />
+              </button>
+
+              {/* Avatar */}
+              <div className="w-16 h-16 bg-forest-green/10 rounded-2xl flex items-center justify-center text-forest-green font-bold text-2xl mb-6">
+                {selectedMember.name.charAt(0)}
+              </div>
+
+              <h3 className="text-2xl font-display font-bold text-deep-slate">{selectedMember.name}</h3>
+              <p className="text-xs font-bold text-forest-green uppercase tracking-widest mt-1 mb-4">{selectedMember.role}</p>
+              <p className="text-sm text-muted-text leading-relaxed mb-6">{selectedMember.desc}</p>
+
+              
+                href={`tel:${selectedMember.phone}`}
+                className="flex items-center gap-3 bg-forest-green/10 hover:bg-forest-green hover:text-white transition-colors rounded-xl px-5 py-3 text-forest-green font-bold text-sm w-full"
+              >
+                <Phone size={16} />
+                {selectedMember.phone}
+              </a>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* ── Hero ── */}
       <section className="relative min-h-[75vh] flex items-center justify-center bg-forest-green text-white overflow-hidden">
@@ -86,7 +141,7 @@ export default function AboutOurStory() {
               It started with a charity visit and a moment of <i>reckoning.</i>
             </h2>
             <p className="text-xl text-muted-text leading-relaxed">
-              A few years ago, our founder went on a charity visit with their school. Seeing the conditions these children were living indespite their joy made one thing undeniably clear: the opportunity to learn, to grow, to simply be in a classroom, is not equally distributed. That moment planted the seed.
+              A few years ago, our founder went on a charity visit with their school. Seeing the conditions these children were living in — despite their joy — made one thing undeniably clear: the opportunity to learn, to grow, to simply be in a classroom, is not equally distributed. That moment planted the seed.
             </p>
             <p className="text-xl text-muted-text leading-relaxed">
               That is why, this year, FundED Futures was born.
@@ -150,7 +205,7 @@ export default function AboutOurStory() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {[
-              { icon: <Heart size={22} />, title: "Radical Empathy", desc: "We place ourselves in the shoes of the families we serve every decision starts there." },
+              { icon: <Heart size={22} />, title: "Radical Empathy", desc: "We place ourselves in the shoes of the families we serve — every decision starts there." },
               { icon: <Target size={22} />, title: "Precision Impact", desc: "Every shilling is tracked and verified for maximum efficacy. No middle-man, no cash handling by parents." },
               { icon: <Users size={22} />, title: "Community Wisdom", desc: "We don't impose solutions; we listen to local leaders and community voices first." },
               { icon: <Globe size={22} />, title: "Global Responsibility", desc: "Empowering one child in Kenya strengthens the global future. Local action, global consequence." },
@@ -208,36 +263,58 @@ export default function AboutOurStory() {
           >
             <h2 className="text-4xl md:text-5xl font-display font-bold">Meet the Team</h2>
             <p className="text-lg text-muted-text max-w-2xl leading-relaxed">
-              Eight students. Equal ownership. One shared mission. Work has been delegated fairly across the group and each member brings a unique piece to the puzzle.
+              Click any card to get in touch. Eight students. Equal ownership. One shared mission.
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {/* Founder / Project Manager — featured card */}
+
+            {/* Austin Muniu — light green featured card */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="sm:col-span-2 lg:col-span-1 flex flex-col gap-3 p-7 bg-forest-green text-white rounded-[2rem]"
+              onClick={() => setSelectedMember({ name: "Austin Muniu", role: "Founder", desc: "Overall oversight and running of the project — the vision holder who set everything in motion.", phone: "0785669667" })}
+              className="sm:col-span-2 lg:col-span-1 flex flex-col gap-3 p-7 bg-forest-green/10 border border-forest-green/20 text-deep-slate rounded-[2rem] cursor-pointer hover:border-forest-green/50 hover:bg-forest-green/15 transition-all"
             >
-              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-forest-green/20 rounded-xl flex items-center justify-center text-forest-green">
                 <BookOpen size={22} />
               </div>
               <div>
-                <span className="font-bold text-lg block">Austin Muniu</span>
-                <span className="text-xs text-white/70 uppercase tracking-widest font-bold">Founder</span>
+                <span className="font-bold text-lg block text-deep-slate">Austin Muniu</span>
+                <span className="text-xs text-forest-green uppercase tracking-widest font-bold">Founder</span>
               </div>
-              <p className="text-sm text-white/80 leading-relaxed">Overall oversight and running of the project the vision holder who set everything in motion.</p>
+              <p className="text-sm text-muted-text leading-relaxed">Overall oversight and running of the project — the vision holder who set everything in motion.</p>
             </motion.div>
 
-            {teamMembers.map((member, idx) => (
+            {/* Xavi Odumbe — light green card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              onClick={() => setSelectedMember(teamMembers.find(m => m.name === "Xavi Odumbe"))}
+              className="flex flex-col gap-3 p-6 bg-forest-green/10 border border-forest-green/20 rounded-[2rem] cursor-pointer hover:border-forest-green/50 hover:bg-forest-green/15 transition-all"
+            >
+              <div className="w-10 h-10 bg-forest-green/20 rounded-xl flex items-center justify-center text-forest-green font-bold text-sm">
+                X
+              </div>
+              <div>
+                <span className="font-bold block text-deep-slate">Xavi Odumbe</span>
+                <span className="text-xs text-forest-green font-bold uppercase tracking-widest">Technology & Operations</span>
+              </div>
+              <p className="text-sm text-muted-text leading-relaxed">Oversees technology infrastructure and coordinates department workflows</p>
+            </motion.div>
+
+            {/* Remaining team members */}
+            {teamMembers.filter(m => m.name !== "Xavi Odumbe").map((member, idx) => (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.07 }}
-                className="flex flex-col gap-3 p-6 bg-white border border-gray-100 rounded-[2rem] hover:border-forest-green/30 transition-all"
+                onClick={() => setSelectedMember(member)}
+                className="flex flex-col gap-3 p-6 bg-white border border-gray-100 rounded-[2rem] hover:border-forest-green/30 transition-all cursor-pointer"
               >
                 <div className="w-10 h-10 bg-forest-green/10 rounded-xl flex items-center justify-center text-forest-green font-bold text-sm">
                   {member.name.charAt(0)}
@@ -258,7 +335,7 @@ export default function AboutOurStory() {
             Join us in <br /><i>Funding the Future.</i>
           </h2>
           <p className="text-xl text-muted-text max-w-xl mx-auto">
-            Whether you donate, volunteer, or share our story you are part of the solution.
+            Whether you donate, volunteer, or share our story — you are part of the solution.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
             <Button variant="primary" className="w-full sm:w-auto px-12" onClick={() => navigate('/donate')}>
