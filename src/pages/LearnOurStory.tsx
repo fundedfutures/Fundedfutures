@@ -15,14 +15,69 @@ import {
 import { Button } from '../components/UI';
 
 const teamMembers = [
-  { name: "Xavi Odumbe", role: "Technology & Operations", desc: "Oversees technology infrastructure and coordinates department workflows", phone: "0710640206" },
-  { name: "Kagiri Gitahi", role: "Church Partnerships", desc: "Oversees relations with Saint Austin's", phone: "0739821625" },
-  { name: "Nicole Matheka", role: "Church Partnerships & Marketing", desc: "Oversees Saint John the Evangelist Karen", phone: "0111664810" },
-  { name: "Joshua Okumu", role: "Church Partnerships", desc: "Oversees CITAM Valley Road", phone: "0769957357" },
-  { name: "Aidan Muiga", role: "Finance & Reporting", desc: "Controls finances and tracks all incoming donations", phone: "0710654482" },
-  { name: "Nelson Onyango", role: "Social Media & Marketing", desc: "Ensures wide brand reach and accessibility", phone: "0791006610" },
-  { name: "Kyle Kwena", role: "Profile & Wellness", desc: "Manages children's profiles and wellness", phone: "0701365334" },
-  { name: "Dylan Mungatta", role: "Relations Officer", desc: "Manages school and community relations", phone: "0722509803" },
+  {
+    name: "Austin Muniu",
+    role: "President",
+    desc: "Leads the organization, oversees activities, and provides overall direction.",
+    phone: "0785669667",
+    featured: true,
+  },
+  {
+    name: "Kagiri Gitahi",
+    role: "Vice President",
+    desc: "Supports the President and helps coordinate activities and leadership responsibilities.",
+    phone: "0739821625",
+    featured: true,
+  },
+  {
+    name: "Xavi Odumbe",
+    role: "Director of Executive Operations",
+    desc: "Manages day-to-day administrative operations, coordinates schedules and communications, and handles meeting minutes and correspondence as an executive partner to the leadership team.",
+    phone: "0710640206",
+    featured: true,
+  },
+  {
+    name: "Aidan Muiga",
+    role: "Treasurer",
+    desc: "Manages finances, budgeting, financial records, and accountability.",
+    phone: "0710654482",
+    featured: true,
+  },
+  {
+    name: "Nelson Onyango",
+    role: "Brand & Marketing Chairperson",
+    desc: "Handles branding, website, social media, promotional materials, photography, and communications.",
+    phone: "",
+    featured: false,
+  },
+  {
+    name: "Nicole Matheka",
+    role: "Community Service Chairperson",
+    desc: "Identifies community needs, organizes service projects, coordinates volunteers, and monitors project impact.",
+    phone: "",
+    featured: false,
+  },
+  {
+    name: "Kyle Kwena",
+    role: "International Projects Chairperson",
+    desc: "Coordinates international projects, partnerships, cultural activities, and international initiatives.",
+    phone: "",
+    featured: false,
+  },
+  {
+    name: "Breanna Ruku",
+    role: "Logistics Chairperson",
+    desc: "Handles venues, transport, equipment, materials, schedules, and event operations.",
+    phone: "",
+    featured: false,
+  },
+  {
+    name: "Joshua Okumu",
+    role: "Membership & Relations Chairperson",
+    desc: "Recruits and welcomes members, supports member engagement, and manages relationships with partners and other stakeholders.",
+    phone: "",
+    featured: false,
+  },
 ];
 
 const milestones = [
@@ -37,6 +92,7 @@ type Member = {
   role: string;
   desc: string;
   phone: string;
+  featured: boolean;
 };
 
 export default function LearnOurStory() {
@@ -85,14 +141,15 @@ export default function LearnOurStory() {
                 {selectedMember.desc}
               </p>
 
-              
-              <a
-                href={`tel:${selectedMember.phone}`}
-                className="flex items-center gap-3 bg-forest-green/10 hover:bg-forest-green hover:text-white transition-colors rounded-xl px-5 py-3 text-forest-green font-bold text-sm w-full"
-              >
-                <Phone size={16} />
-                {selectedMember.phone}
-              </a>
+              {selectedMember.phone && (
+                <a
+                  href={`tel:${selectedMember.phone}`}
+                  className="flex items-center gap-3 bg-forest-green/10 hover:bg-forest-green hover:text-white transition-colors rounded-xl px-5 py-3 text-forest-green font-bold text-sm w-full"
+                >
+                  <Phone size={16} />
+                  {selectedMember.phone}
+                </a>
+              )}
             </motion.div>
           </>
         )}
@@ -312,93 +369,43 @@ export default function LearnOurStory() {
           >
             <h2 className="text-4xl md:text-5xl font-display font-bold">Meet the Team</h2>
             <p className="text-lg text-muted-text max-w-2xl leading-relaxed">
-              Click any card to get in touch. Eight students. Equal ownership. One shared mission.
+              Click any card to get in touch. Nine students. Equal ownership. One shared mission.
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-
-            {/* Austin Muniu — light green featured card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              onClick={() =>
-                setSelectedMember({
-                  name: 'Austin Muniu',
-                  role: 'Founder',
-                  desc: 'Overall oversight and running of the project — the vision holder who set everything in motion.',
-                  phone: '0785669667',
-                })
-              }
-              className="sm:col-span-2 lg:col-span-1 flex flex-col gap-3 p-7 bg-forest-green/10 border border-forest-green/20 text-deep-slate rounded-[2rem] cursor-pointer hover:border-forest-green/50 hover:bg-forest-green/15 transition-all"
-            >
-              <div className="w-12 h-12 bg-forest-green/20 rounded-xl flex items-center justify-center text-forest-green">
-                <BookOpen size={22} />
-              </div>
-              <div>
-                <span className="font-bold text-lg block text-deep-slate">Austin Muniu</span>
-                <span className="text-xs text-forest-green uppercase tracking-widest font-bold">
-                  Founder
-                </span>
-              </div>
-              <p className="text-sm text-muted-text leading-relaxed">
-                Overall oversight and running of the project — the vision holder who set everything
-                in motion.
-              </p>
-            </motion.div>
-
-            {/* Xavi Odumbe — light green card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              onClick={() =>
-                setSelectedMember(
-                  teamMembers.find((m) => m.name === 'Xavi Odumbe') ?? null
-                )
-              }
-              className="flex flex-col gap-3 p-6 bg-forest-green/10 border border-forest-green/20 rounded-[2rem] cursor-pointer hover:border-forest-green/50 hover:bg-forest-green/15 transition-all"
-            >
-              <div className="w-10 h-10 bg-forest-green/20 rounded-xl flex items-center justify-center text-forest-green font-bold text-sm">
-                X
-              </div>
-              <div>
-                <span className="font-bold block text-deep-slate">Xavi Odumbe</span>
-                <span className="text-xs text-forest-green font-bold uppercase tracking-widest">
-                  Technology &amp; Operations
-                </span>
-              </div>
-              <p className="text-sm text-muted-text leading-relaxed">
-                Oversees technology infrastructure and coordinates department workflows
-              </p>
-            </motion.div>
-
-            {/* Remaining team members */}
-            {teamMembers
-              .filter((m) => m.name !== 'Xavi Odumbe')
-              .map((member, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.07 }}
-                  onClick={() => setSelectedMember(member)}
-                  className="flex flex-col gap-3 p-6 bg-white border border-gray-100 rounded-[2rem] hover:border-forest-green/30 transition-all cursor-pointer"
+            {teamMembers.map((member, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.07 }}
+                onClick={() => setSelectedMember(member)}
+                className={
+                  member.featured
+                    ? "flex flex-col gap-3 p-6 bg-forest-green/10 border border-forest-green/20 rounded-[2rem] cursor-pointer hover:border-forest-green/50 hover:bg-forest-green/15 transition-all"
+                    : "flex flex-col gap-3 p-6 bg-white border border-gray-100 rounded-[2rem] hover:border-forest-green/30 transition-all cursor-pointer"
+                }
+              >
+                <div
+                  className={
+                    member.featured
+                      ? "w-10 h-10 bg-forest-green/20 rounded-xl flex items-center justify-center text-forest-green font-bold text-sm"
+                      : "w-10 h-10 bg-forest-green/10 rounded-xl flex items-center justify-center text-forest-green font-bold text-sm"
+                  }
                 >
-                  <div className="w-10 h-10 bg-forest-green/10 rounded-xl flex items-center justify-center text-forest-green font-bold text-sm">
-                    {member.name.charAt(0)}
-                  </div>
-                  <div>
-                    <span className="font-bold block">{member.name}</span>
-                    <span className="text-xs text-forest-green font-bold uppercase tracking-widest">
-                      {member.role}
-                    </span>
-                  </div>
-                  <p className="text-sm text-muted-text leading-relaxed">{member.desc}</p>
-                </motion.div>
-              ))}
+                  {member.name.charAt(0)}
+                </div>
+                <div>
+                  <span className="font-bold block text-deep-slate">{member.name}</span>
+                  <span className="text-xs text-forest-green font-bold uppercase tracking-widest">
+                    {member.role}
+                  </span>
+                </div>
+                <p className="text-sm text-muted-text leading-relaxed">{member.desc}</p>
+              </motion.div>
+            ))}
           </div>
         </section>
 
