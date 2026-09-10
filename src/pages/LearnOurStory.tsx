@@ -81,10 +81,9 @@ const teamMembers = [
 ];
 
 const milestones = [
-  { icon: <CheckCircle size={18} />, text: "Profiled 125 children from target communities" },
-  { icon: <CheckCircle size={18} />, text: "Fundraising partnerships with Saint Austin's & Saint John the Evangelist Karen" },
+  { icon: <CheckCircle size={18} />, text: "Hit key milestones including building a growing team with structured accountability and rising credibility" },
+  { icon: <CheckCircle size={18} />, text: "Established strategic partnerships with schools, charities, and corporates" },
   { icon: <CheckCircle size={18} />, text: "Launched a dedicated website for online donations" },
-  { icon: <CheckCircle size={18} />, text: "Identified channels: school events, church fundraisers, charity tournaments, NGOs & independent donors" },
 ];
 
 type Member = {
@@ -250,9 +249,9 @@ export default function LearnOurStory() {
               from underserved communities across Kenya.
             </p>
             <p className="text-lg text-muted-text leading-relaxed">
-              We have identified <strong>125 children</strong> from slum communities and children's
+              We have identified <strong>100 children</strong> from slum communities and children's
               homes whose educational needs we are committed to supporting. Our fundraising target is{' '}
-              <strong>KSH 3,200,000</strong>, to be raised between May and November 2026.
+              <strong>KSH 2,500,000</strong>, to be raised between May and November 2026.
             </p>
           </div>
 
@@ -339,7 +338,7 @@ export default function LearnOurStory() {
           <div className="text-center max-w-2xl mx-auto space-y-4">
             <h2 className="text-4xl md:text-5xl font-display font-bold">Progress So Far</h2>
             <p className="text-lg text-muted-text">
-              We've been running for a few months, and we've already hit the ground running.
+              Raised over 100K KES to help children stay in school during financial crises.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-3xl mx-auto">
