@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import {
   Menu,
-  X,
+  X as CloseIcon,
   ArrowRight,
   Heart,
   Users,
@@ -18,9 +18,6 @@ import {
   HandHeart,
   Share2,
   Instagram,
-  Facebook,
-  Twitter,
-  Music,
   ChevronDown,
 } from 'lucide-react';
 import ImpactAreas from './pages/ImpactAreas';
@@ -42,6 +39,54 @@ import ContactPopup from './components/ContactPopup';
 import ScrollToTop from './components/ScrollToTop';
 import { ContactProvider, useContact } from './context/ContactContext';
 import { Button, SectionHeader, Card } from './components/UI';
+
+// ─── Custom social icons (not available in lucide-react) ─────────────────────
+
+function XIcon({ size = 18, ...props }: { size?: number } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
+
+function TikTokIcon({ size = 18, ...props }: { size?: number } & React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" {...props}>
+      <path d="M16.6 5.82c-.9-.98-1.4-2.26-1.4-3.57h-3.45v14.1a2.59 2.59 0 1 1-2.59-2.59c.16 0 .32.01.47.04V10.3a5.92 5.92 0 0 0-.47-.02A6.08 6.08 0 0 0 3 16.36 6.08 6.08 0 0 0 9.13 22.4a6.08 6.08 0 0 0 6.08-6.08V9.05a9.37 9.37 0 0 0 5.79 2v-3.44a5.6 5.6 0 0 1-4.4-1.79z" />
+    </svg>
+  );
+}
+
+// ─── Social links data ─────────────────────────────────────────────────────────
+
+type SocialLink = {
+  name: string;
+  url: string;
+  icon: (props: { size?: number } & React.SVGProps<SVGSVGElement>) => React.ReactElement;
+  message: string;
+};
+
+const socialLinks: SocialLink[] = [
+  {
+    name: 'TikTok',
+    url: 'https://www.tiktok.com/@fund.edfutures',
+    icon: TikTokIcon,
+    message: 'See our latest videos and behind-the-scenes moments from the students we support.',
+  },
+  {
+    name: 'Instagram',
+    url: 'https://www.instagram.com/fund.edfutures/',
+    icon: (props) => <Instagram {...props} />,
+    message: 'Follow us on Instagram to learn more about our students and their stories.',
+  },
+  {
+    name: 'X',
+    url: 'https://x.com/FundedFutur3s',
+    icon: XIcon,
+    message: 'Follow us on X for updates and announcements from fundED futures.',
+  },
+];
 
 // ─── NavDropdown ─────────────────────────────────────────────────────────────
 
@@ -123,6 +168,7 @@ function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showCookiePopup, setShowCookiePopup] = useState(false);
+  const [socialPopup, setSocialPopup] = useState<SocialLink | null>(null);
   const navigate = useNavigate();
   const { openContact } = useContact();
 
@@ -208,7 +254,7 @@ function Home() {
           </div>
 
           <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <X /> : <Menu />}
+            {isMenuOpen ? <CloseIcon /> : <Menu />}
           </button>
         </div>
 
@@ -683,14 +729,16 @@ function Home() {
                 "A better world begins in the mind of a child"
               </p>
               <div className="flex gap-4">
-                {[Twitter, Instagram, Facebook, Music].map((Icon, i) => (
-                  <a
-                    key={i}
-                    href="#"
+                {socialLinks.map((social) => (
+                  <button
+                    key={social.name}
+                    type="button"
+                    onClick={() => setSocialPopup(social)}
+                    aria-label={`Visit our ${social.name}`}
                     className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-forest-green transition-colors"
                   >
-                    <Icon size={18} />
-                  </a>
+                    <social.icon size={18} />
+                  </button>
                 ))}
               </div>
             </div>
@@ -840,6 +888,56 @@ function Home() {
                 Reject
               </Button>
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── Social confirmation popup ── */}
+      <AnimatePresence>
+        {socialPopup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[110] bg-deep-slate/60 backdrop-blur-sm flex items-center justify-center px-6"
+            onClick={() => setSocialPopup(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-[2rem] p-8 md:p-10 max-w-sm w-full text-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="w-14 h-14 mx-auto mb-6 rounded-full bg-forest-green/10 flex items-center justify-center text-forest-green">
+                <socialPopup.icon size={24} />
+              </div>
+              <h4 className="text-lg font-display font-bold mb-3 text-deep-slate">
+                Visit us on {socialPopup.name}
+              </h4>
+              <p className="text-sm text-muted-text mb-8 leading-relaxed">
+                {socialPopup.message}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Button
+                  variant="primary"
+                  className="text-xs py-2.5 px-8 w-full sm:w-auto"
+                  onClick={() => {
+                    window.open(socialPopup.url, '_blank', 'noopener,noreferrer');
+                    setSocialPopup(null);
+                  }}
+                >
+                  Take Me There
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="text-xs py-2.5 px-8 w-full sm:w-auto border-gray-200"
+                  onClick={() => setSocialPopup(null)}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
