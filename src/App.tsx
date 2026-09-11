@@ -35,6 +35,7 @@ import LearnOurStory from './pages/LearnOurStory';
 import ImpactStories from './pages/ImpactStories';
 import Programs from './pages/Programs';
 import FAQ from './pages/FAQ';
+import Team from './pages/Team';
 import ContactPopup from './components/ContactPopup';
 import ScrollToTop from './components/ScrollToTop';
 import { ContactProvider, useContact } from './context/ContactContext';
@@ -120,7 +121,7 @@ function NavDropdown({
       );
     }
     return (
-      <a
+      
         key={idx}
         href={item.href}
         className={itemClass}
@@ -212,7 +213,7 @@ function Home() {
               Home
             </Link>
 
-            <a
+            
               href="/#our-mission"
               className="flex-1 text-center font-medium hover:text-forest-green transition-colors py-3"
             >
@@ -228,7 +229,14 @@ function Home() {
               ]}
             />
 
-            <a
+            <Link
+              to="/team"
+              className="flex-1 text-center font-medium hover:text-forest-green transition-colors py-3"
+            >
+              Our Team
+            </Link>
+
+            
               href="/#get-involved"
               className="flex-1 text-center font-medium hover:text-forest-green transition-colors py-3"
             >
@@ -279,7 +287,7 @@ function Home() {
                   Home
                 </Link>
 
-                <a
+                
                   href="/#our-mission"
                   className="text-lg font-medium"
                   onClick={() => setIsMenuOpen(false)}
@@ -306,6 +314,14 @@ function Home() {
                     Direct Impact Areas
                   </Link>
                 </div>
+
+                <Link
+                  to="/team"
+                  className="text-lg font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Meet the Team
+                </Link>
 
                 <div className="space-y-3">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-forest-green">
@@ -754,6 +770,11 @@ function Home() {
                   </Link>
                 </li>
                 <li>
+                  <Link to="/team" className="hover:text-forest-green transition-colors">
+                    Meet the Team
+                  </Link>
+                </li>
+                <li>
                   <Link
                     to="/how-it-works/identify"
                     className="hover:text-forest-green transition-colors"
@@ -969,6 +990,7 @@ export default function App() {
           <Route path="/learn-story" element={<LearnOurStory />} />
           <Route path="/programs" element={<Programs />} />
           <Route path="/faq" element={<FAQ />} />
+          <Route path="/team" element={<Team />} />
         </Routes>
       </ContactProvider>
     </BrowserRouter>
