@@ -24,10 +24,10 @@ export default function Volunteer() {
   });
 
   const [showCalendar, setShowCalendar] = useState(false);
-  const [calendarView, setCalendarView] = useState(new Date(new Date().setFullYear(new Date().getFullYear() - 8)));
+  const [calendarView, setCalendarView] = useState(new Date(new Date().setFullYear(new Date().getFullYear() - 13)));
 
   const maxDate = new Date();
-  maxDate.setFullYear(maxDate.getFullYear() - 8);
+  maxDate.setFullYear(maxDate.getFullYear() - 13);
 
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -218,7 +218,7 @@ const handleSubmit = (e: React.FormEvent) => {
             </div>
 
             <div className="space-y-2 relative">
-              <label className="block text-xs font-bold uppercase tracking-widest text-muted-text ml-2">Date of Birth (Min. 8 Years Old) *</label>
+              <label className="block text-xs font-bold uppercase tracking-widest text-muted-text ml-2">Date of Birth (Min. 13 Years Old) *</label>
               <div 
                 id="birthdate-picker-trigger"
                 onClick={() => setShowCalendar(!showCalendar)}
