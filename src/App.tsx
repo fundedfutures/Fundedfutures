@@ -40,6 +40,8 @@ import ScrollToTop from './components/ScrollToTop';
 import { ContactProvider, useContact } from './context/ContactContext';
 import { Button, SectionHeader, Card } from './components/UI';
 
+// ─── Custom social icons (not available in lucide-react) ─────────────────────
+
 function XIcon({ size = 18, ...props }: { size?: number } & React.SVGProps<SVGSVGElement>) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" {...props}>
@@ -55,6 +57,8 @@ function TikTokIcon({ size = 18, ...props }: { size?: number } & React.SVGProps<
     </svg>
   );
 }
+
+// ─── Social links data ─────────────────────────────────────────────────────────
 
 type SocialLink = {
   name: string;
@@ -88,6 +92,8 @@ const socialLinks: SocialLink[] = [
 // Vite serves files in public/ from the root URL in production.
 const HOMEPAGE_VIDEO_URL = '/funded-futures-video.mp4';
 const HOMEPAGE_VIDEO_POSTER = 'https://i.imgur.com/c2tmG1v.jpeg';
+
+// ─── NavDropdown ─────────────────────────────────────────────────────────────
 
 type NavItem = { label: string; to?: string; href?: string };
 
@@ -149,6 +155,8 @@ function NavDropdown({
   );
 }
 
+// ─── Home ─────────────────────────────────────────────────────────────────────
+
 function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -173,6 +181,7 @@ function Home() {
 
   return (
     <div className="min-h-screen selection:bg-forest-green/30">
+      {/* ── Navigation ── */}
       <nav
         className={`fixed top-0 w-full z-50 transition-smooth px-[5%] py-4 ${
           isScrolled ? 'bg-snow/80 backdrop-blur-xl border-b border-gray-100' : 'bg-transparent'
@@ -182,6 +191,7 @@ function Home() {
           <a href="#" className="text-2xl font-display font-bold">
             fund<span className="text-forest-green">ED</span> futures
           </a>
+          {/* Desktop nav */}
           <div className="hidden md:flex flex-1 ml-12 justify-between items-center bg-white/50 backdrop-blur-sm rounded-full px-2">
             <Link to="/" className="flex-1 text-center font-medium hover:text-forest-green transition-colors py-3" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               Home
@@ -189,6 +199,13 @@ function Home() {
             <a href="/#our-mission" className="flex-1 text-center font-medium hover:text-forest-green transition-colors py-3">
               Mission
             </a>
+            <Link
+              to="/learn-story#meet-the-team"
+              className="flex-1 flex items-center justify-center gap-1 text-center font-medium hover:text-forest-green transition-colors py-3"
+            >
+              <Users size={16} />
+              <span>Meet the Team</span>
+            </Link>
             <NavDropdown
               label="Impact"
               className="flex-1"
@@ -213,6 +230,7 @@ function Home() {
             {isMenuOpen ? <CloseIcon /> : <Menu />}
           </button>
         </div>
+        {/* Mobile menu */}
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
@@ -228,6 +246,14 @@ function Home() {
                 <a href="/#our-mission" className="text-lg font-medium" onClick={() => setIsMenuOpen(false)}>
                   Our Mission
                 </a>
+                <Link
+                  to="/learn-story#meet-the-team"
+                  className="flex items-center gap-2 text-lg font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Users size={18} />
+                  Meet the Team
+                </Link>
                 <div className="space-y-3">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-forest-green">Impact</p>
                   <Link to="/impact-stories" className="block text-lg font-medium ml-4" onClick={() => setIsMenuOpen(false)}>Impact Stories</Link>
@@ -252,6 +278,7 @@ function Home() {
       </nav>
 
       <main>
+        {/* ── Hero ── */}
         <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-off-white">
           <div className="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/pinstripe-light.png')]" />
           <div className="relative z-10 text-center px-6 max-w-4xl py-20">
@@ -300,6 +327,7 @@ function Home() {
           </motion.div>
         </section>
 
+        {/* ── Our Mission ── */}
         <section id="our-mission" className="py-20 md:py-32 px-[5%] bg-[#f7fcfb]">
           <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
             <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="relative aspect-square md:aspect-[4/5] rounded-3xl overflow-hidden border border-gray-100 order-2 md:order-1">
@@ -324,6 +352,7 @@ function Home() {
           </div>
         </section>
 
+        {/* ── How It Works ── */}
         <section id="how-it-works" className="py-20 md:py-32 px-[5%] bg-white">
           <div className="max-w-7xl mx-auto">
             <SectionHeader title="How It Works" subtitle="A simple, transparent process for lasting change." />
@@ -346,6 +375,7 @@ function Home() {
           </div>
         </section>
 
+        {/* ── Impact Stories ── */}
         <section id="impact" className="py-24 md:py-32 px-[5%] bg-snow">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
@@ -377,6 +407,7 @@ function Home() {
           </div>
         </section>
 
+        {/* ── Get Involved ── */}
         <section id="get-involved" className="py-24 px-[5%]">
           <motion.div initial={{ opacity: 0, y: 50 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-7xl mx-auto bg-frosted-blue rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden">
             <div className="relative z-10">
@@ -405,6 +436,7 @@ function Home() {
           </motion.div>
         </section>
 
+        {/* ── Newsletter CTA ── */}
         <section className="pb-24 px-[5%] text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="max-w-xl mx-auto">
             <Button variant="ghost" className="group relative overflow-hidden px-12 py-5 text-xl border-forest-green text-forest-green hover:text-white transition-all duration-500 rounded-full w-full sm:w-auto" onClick={() => navigate('/subscribe')}>
@@ -415,6 +447,7 @@ function Home() {
         </section>
       </main>
 
+      {/* ── Footer ── */}
       <footer id="contact" className="bg-deep-slate text-white pt-24 pb-12 px-[5%]">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-16 border-b border-white/10">
@@ -461,6 +494,7 @@ function Home() {
         </div>
       </footer>
 
+      {/* ── Cookie popup ── */}
       <AnimatePresence>
         {showCookiePopup && (
           <motion.div initial={{ y: 50, x: '-50%', opacity: 0 }} animate={{ y: 0, x: '-50%', opacity: 1 }} exit={{ y: 50, x: '-50%', opacity: 0 }} className="fixed bottom-6 left-1/2 z-[100] w-[92%] max-w-md bg-white/95 backdrop-blur-xl p-8 rounded-[2rem] border border-gray-200 text-center">
@@ -474,6 +508,7 @@ function Home() {
         )}
       </AnimatePresence>
 
+      {/* ── Social confirmation popup ── */}
       <AnimatePresence>
         {socialPopup && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-[110] bg-deep-slate/60 backdrop-blur-sm flex items-center justify-center px-6" onClick={() => setSocialPopup(null)}>
@@ -492,6 +527,8 @@ function Home() {
     </div>
   );
 }
+
+// ─── Router ──────────────────────────────────────────────────────────────────
 
 export default function App() {
   return (
