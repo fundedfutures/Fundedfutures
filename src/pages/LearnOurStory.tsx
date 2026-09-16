@@ -99,10 +99,10 @@ export default function LearnOurStory() {
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
 
   useEffect(() => {
-    if (window.location.hash !== '#meet-the-team') return;
+    if (window.location.hash !== '#leaders') return;
 
     const scrollToTeam = window.setTimeout(() => {
-      document.getElementById('meet-the-team')?.scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('leaders')?.scrollIntoView({ behavior: 'smooth' });
     }, 100);
 
     return () => window.clearTimeout(scrollToTeam);
@@ -255,11 +255,10 @@ export default function LearnOurStory() {
           </div>
         </section>
 
-        {/* ── Meet the Team ── */}
-        <section id="meet-the-team" className="space-y-12 scroll-mt-28">
+        {/* ── Leaders ── */}
+        <section id="leaders" className="space-y-12 scroll-mt-28">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="space-y-4">
-            <h2 className="text-4xl md:text-5xl font-display font-bold">Meet the Team</h2>
-            <p className="text-lg text-muted-text max-w-2xl leading-relaxed">Click any card to get in touch. Nine students. Equal ownership. One shared mission.</p>
+            <h2 className="text-4xl md:text-5xl font-display font-bold">Leaders</h2>
           </motion.div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {teamMembers.map((member, idx) => (
