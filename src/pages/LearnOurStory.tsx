@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -98,9 +98,18 @@ export default function LearnOurStory() {
   const navigate = useNavigate();
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
 
+  useEffect(() => {
+    if (window.location.hash !== '#meet-the-team') return;
+
+    const scrollToTeam = window.setTimeout(() => {
+      document.getElementById('meet-the-team')?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+
+    return () => window.clearTimeout(scrollToTeam);
+  }, []);
+
   return (
     <div className="min-h-screen bg-snow text-deep-slate font-body overflow-x-hidden">
-
       {/* ── Member Popup ── */}
       <AnimatePresence>
         {selectedMember && (
@@ -125,21 +134,12 @@ export default function LearnOurStory() {
               >
                 <X size={16} />
               </button>
-
               <div className="w-16 h-16 bg-forest-green/10 rounded-2xl flex items-center justify-center text-forest-green font-bold text-2xl mb-6">
                 {selectedMember.name.charAt(0)}
               </div>
-
-              <h3 className="text-2xl font-display font-bold text-deep-slate">
-                {selectedMember.name}
-              </h3>
-              <p className="text-xs font-bold text-forest-green uppercase tracking-widest mt-1 mb-4">
-                {selectedMember.role}
-              </p>
-              <p className="text-sm text-muted-text leading-relaxed mb-6">
-                {selectedMember.desc}
-              </p>
-
+              <h3 className="text-2xl font-display font-bold text-deep-slate">{selectedMember.name}</h3>
+              <p className="text-xs font-bold text-forest-green uppercase tracking-widest mt-1 mb-4">{selectedMember.role}</p>
+              <p className="text-sm text-muted-text leading-relaxed mb-6">{selectedMember.desc}</p>
               {selectedMember.phone && (
                 <a
                   href={`tel:${selectedMember.phone}`}
@@ -163,31 +163,16 @@ export default function LearnOurStory() {
           className="absolute inset-0 w-full h-full object-cover opacity-60 scale-105"
         />
         <div className="relative z-20 text-center px-6 max-w-5xl pt-20">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex items-center justify-center gap-3 mb-6"
-          >
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-center gap-3 mb-6">
             <span className="w-10 h-1 bg-white/40" />
             <p className="text-sm font-bold tracking-[0.4em] uppercase">About Us &amp; Our Story</p>
             <span className="w-10 h-1 bg-white/40" />
           </motion.div>
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-5xl md:text-8xl font-display font-bold leading-tight"
-          >
+          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-5xl md:text-8xl font-display font-bold leading-tight">
             Who We Are &amp; <br /><i>Why We Started</i>
           </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="mt-8 text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed"
-          >
-            A student-led initiative born from a single charity visit and a conviction that
-            privilege carries responsibility.
+          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="mt-8 text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
+            A student-led initiative born from a single charity visit and a conviction that privilege carries responsibility.
           </motion.p>
         </div>
       </section>
@@ -201,40 +186,15 @@ export default function LearnOurStory() {
       </button>
 
       <div className="max-w-5xl mx-auto px-6 py-24 space-y-36">
-
         {/* ── Origin Story ── */}
         <section className="space-y-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="space-y-6 max-w-3xl"
-          >
-            <h2 className="text-4xl md:text-5xl font-display font-bold leading-tight">
-              It started with a charity visit and a moment of <i>reckoning.</i>
-            </h2>
-            <p className="text-xl text-muted-text leading-relaxed">
-              A few years ago, our founder went on a charity visit with their school. Seeing the
-              conditions these children were living in — despite their joy — made one thing
-              undeniably clear: the opportunity to learn, to grow, to simply be in a classroom, is
-              not equally distributed. That moment planted the seed.
-            </p>
-            <p className="text-xl text-muted-text leading-relaxed">
-              That is why, this year, FundED Futures was born.
-            </p>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="space-y-6 max-w-3xl">
+            <h2 className="text-4xl md:text-5xl font-display font-bold leading-tight">It started with a charity visit and a moment of <i>reckoning.</i></h2>
+            <p className="text-xl text-muted-text leading-relaxed">A few years ago, our founder went on a charity visit with their school. Seeing the conditions these children were living in — despite their joy — made one thing undeniably clear: the opportunity to learn, to grow, to simply be in a classroom, is not equally distributed. That moment planted the seed.</p>
+            <p className="text-xl text-muted-text leading-relaxed">That is why, this year, FundED Futures was born.</p>
           </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="aspect-video rounded-[3rem] overflow-hidden border border-gray-100"
-          >
-            <img
-              src="https://i.imgur.com/I1yj9CJ.jpeg"
-              alt="Student focused on study"
-              className="w-full h-full object-cover"
-            />
+          <motion.div initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="aspect-video rounded-[3rem] overflow-hidden border border-gray-100">
+            <img src="https://i.imgur.com/I1yj9CJ.jpeg" alt="Student focused on study" className="w-full h-full object-cover" />
           </motion.div>
         </section>
 
@@ -242,92 +202,38 @@ export default function LearnOurStory() {
         <section className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
           <div className="space-y-8">
             <h2 className="text-3xl md:text-4xl font-display font-bold">Who We Are</h2>
-            <p className="text-lg text-muted-text leading-relaxed">
-              FundED Futures is a <strong>student-led non-profit initiative</strong> founded at
-              Strathmore School, driven by a team of eight students from Strathmore School and the
-              Nairobi International School. Our goal is to finance the educational needs of children
-              from underserved communities across Kenya.
-            </p>
-            <p className="text-lg text-muted-text leading-relaxed">
-              We have identified <strong>100 children</strong> from slum communities and children's
-              homes whose educational needs we are committed to supporting. Our fundraising target is{' '}
-              <strong>KSH 2,500,000</strong>, to be raised between May and November 2026.
-            </p>
+            <p className="text-lg text-muted-text leading-relaxed">FundED Futures is a <strong>student-led non-profit initiative</strong> founded at Strathmore School, driven by a team of eight students from Strathmore School and the Nairobi International School. Our goal is to finance the educational needs of children from underserved communities across Kenya.</p>
+            <p className="text-lg text-muted-text leading-relaxed">We have identified <strong>100 children</strong> from slum communities and children's homes whose educational needs we are committed to supporting. Our fundraising target is <strong>KSH 2,500,000</strong>, to be raised between May and November 2026.</p>
           </div>
-
           <div className="relative">
             <div className="aspect-[4/5] bg-frosted-blue/20 rounded-[3rem] p-4">
               <div className="w-full h-full bg-white rounded-[2.5rem] overflow-hidden border border-white">
-                <img
-                  src="https://i.imgur.com/7cpCsAt.jpeg"
-                  alt="Mission in action"
-                  className="w-full h-full object-cover"
-                />
+                <img src="https://i.imgur.com/7cpCsAt.jpeg" alt="Mission in action" className="w-full h-full object-cover" />
               </div>
             </div>
             <div className="absolute -bottom-8 -right-8 bg-white p-8 rounded-[2.5rem] max-w-[240px] border border-gray-100 hidden lg:block">
-              <p className="text-xs italic font-medium opacity-80 mb-2">
-                "Opportunity is the fuel of potential. We ensure that fuel never runs dry."
-              </p>
-              <span className="text-[10px] font-bold text-forest-green uppercase tracking-widest">
-                — The Founder
-              </span>
+              <p className="text-xs italic font-medium opacity-80 mb-2">"Opportunity is the fuel of potential. We ensure that fuel never runs dry."</p>
+              <span className="text-[10px] font-bold text-forest-green uppercase tracking-widest">— The Founder</span>
             </div>
           </div>
         </section>
 
         {/* ── Core Pillars ── */}
         <section className="space-y-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center max-w-2xl mx-auto space-y-4"
-          >
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="text-center max-w-2xl mx-auto space-y-4">
             <h2 className="text-4xl md:text-5xl font-display font-bold">Our Four Pillars</h2>
-            <p className="text-lg text-muted-text">
-              Everything we do is guided by these core commitments.
-            </p>
+            <p className="text-lg text-muted-text">Everything we do is guided by these core commitments.</p>
           </motion.div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {[
-              {
-                icon: <Heart size={22} />,
-                title: 'Radical Empathy',
-                desc: 'We place ourselves in the shoes of the families we serve — every decision starts there.',
-              },
-              {
-                icon: <Target size={22} />,
-                title: 'Precision Impact',
-                desc: 'Every shilling is tracked and verified for maximum efficacy. No middle-man, no cash handling by parents.',
-              },
-              {
-                icon: <Users size={22} />,
-                title: 'Community Wisdom',
-                desc: "We don't impose solutions; we listen to local leaders and community voices first.",
-              },
-              {
-                icon: <Globe size={22} />,
-                title: 'Global Responsibility',
-                desc: 'Empowering one child in Kenya strengthens the global future. Local action, global consequence.',
-              },
+              { icon: <Heart size={22} />, title: 'Radical Empathy', desc: 'We place ourselves in the shoes of the families we serve — every decision starts there.' },
+              { icon: <Target size={22} />, title: 'Precision Impact', desc: 'Every shilling is tracked and verified for maximum efficacy. No middle-man, no cash handling by parents.' },
+              { icon: <Users size={22} />, title: 'Community Wisdom', desc: "We don't impose solutions; we listen to local leaders and community voices first." },
+              { icon: <Globe size={22} />, title: 'Global Responsibility', desc: 'Empowering one child in Kenya strengthens the global future. Local action, global consequence.' },
             ].map((item, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="flex gap-5 p-6 bg-white rounded-[2rem] border border-gray-100 hover:border-forest-green/30 transition-all"
-              >
-                <div className="w-12 h-12 bg-forest-green/10 rounded-xl flex items-center justify-center text-forest-green flex-shrink-0">
-                  {item.icon}
-                </div>
-                <div>
-                  <span className="font-bold block mb-1">{item.title}</span>
-                  <span className="text-sm text-muted-text leading-relaxed">{item.desc}</span>
-                </div>
+              <motion.div key={idx} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} className="flex gap-5 p-6 bg-white rounded-[2rem] border border-gray-100 hover:border-forest-green/30 transition-all">
+                <div className="w-12 h-12 bg-forest-green/10 rounded-xl flex items-center justify-center text-forest-green flex-shrink-0">{item.icon}</div>
+                <div><span className="font-bold block mb-1">{item.title}</span><span className="text-sm text-muted-text leading-relaxed">{item.desc}</span></div>
               </motion.div>
             ))}
           </div>
@@ -337,20 +243,11 @@ export default function LearnOurStory() {
         <section className="py-20 bg-frosted-blue/10 rounded-[4rem] px-8 md:px-16 space-y-12">
           <div className="text-center max-w-2xl mx-auto space-y-4">
             <h2 className="text-4xl md:text-5xl font-display font-bold">Progress So Far</h2>
-            <p className="text-lg text-muted-text">
-              Raised over 100K KES to help children stay in school during financial crises.
-            </p>
+            <p className="text-lg text-muted-text">Raised over 100K KES to help children stay in school during financial crises.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 max-w-3xl mx-auto">
             {milestones.map((m, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-                className="flex items-start gap-4 p-5 bg-white rounded-2xl border border-gray-100"
-              >
+              <motion.div key={idx} initial={{ opacity: 0, x: -10 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.1 }} className="flex items-start gap-4 p-5 bg-white rounded-2xl border border-gray-100">
                 <span className="text-forest-green mt-0.5 flex-shrink-0">{m.icon}</span>
                 <p className="text-sm font-medium leading-relaxed">{m.text}</p>
               </motion.div>
@@ -359,49 +256,16 @@ export default function LearnOurStory() {
         </section>
 
         {/* ── Meet the Team ── */}
-        <section className="space-y-12">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="space-y-4"
-          >
+        <section id="meet-the-team" className="space-y-12 scroll-mt-28">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="space-y-4">
             <h2 className="text-4xl md:text-5xl font-display font-bold">Meet the Team</h2>
-            <p className="text-lg text-muted-text max-w-2xl leading-relaxed">
-              Click any card to get in touch. Nine students. Equal ownership. One shared mission.
-            </p>
+            <p className="text-lg text-muted-text max-w-2xl leading-relaxed">Click any card to get in touch. Nine students. Equal ownership. One shared mission.</p>
           </motion.div>
-
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {teamMembers.map((member, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.07 }}
-                onClick={() => setSelectedMember(member)}
-                className={
-                  member.featured
-                    ? "flex flex-col gap-3 p-6 bg-forest-green/10 border border-forest-green/20 rounded-[2rem] cursor-pointer hover:border-forest-green/50 hover:bg-forest-green/15 transition-all"
-                    : "flex flex-col gap-3 p-6 bg-white border border-gray-100 rounded-[2rem] hover:border-forest-green/30 transition-all cursor-pointer"
-                }
-              >
-                <div
-                  className={
-                    member.featured
-                      ? "w-10 h-10 bg-forest-green/20 rounded-xl flex items-center justify-center text-forest-green font-bold text-sm"
-                      : "w-10 h-10 bg-forest-green/10 rounded-xl flex items-center justify-center text-forest-green font-bold text-sm"
-                  }
-                >
-                  {member.name.charAt(0)}
-                </div>
-                <div>
-                  <span className="font-bold block text-deep-slate">{member.name}</span>
-                  <span className="text-xs text-forest-green font-bold uppercase tracking-widest">
-                    {member.role}
-                  </span>
-                </div>
+              <motion.div key={idx} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: idx * 0.07 }} onClick={() => setSelectedMember(member)} className={member.featured ? "flex flex-col gap-3 p-6 bg-forest-green/10 border border-forest-green/20 rounded-[2rem] cursor-pointer hover:border-forest-green/50 hover:bg-forest-green/15 transition-all" : "flex flex-col gap-3 p-6 bg-white border border-gray-100 rounded-[2rem] hover:border-forest-green/30 transition-all cursor-pointer"}>
+                <div className={member.featured ? "w-10 h-10 bg-forest-green/20 rounded-xl flex items-center justify-center text-forest-green font-bold text-sm" : "w-10 h-10 bg-forest-green/10 rounded-xl flex items-center justify-center text-forest-green font-bold text-sm"}>{member.name.charAt(0)}</div>
+                <div><span className="font-bold block text-deep-slate">{member.name}</span><span className="text-xs text-forest-green font-bold uppercase tracking-widest">{member.role}</span></div>
                 <p className="text-sm text-muted-text leading-relaxed">{member.desc}</p>
               </motion.div>
             ))}
@@ -410,30 +274,13 @@ export default function LearnOurStory() {
 
         {/* ── Final CTA ── */}
         <section className="text-center pb-20 space-y-8">
-          <h2 className="text-5xl md:text-7xl font-display font-bold">
-            Join us in <br /><i>Funding the Future.</i>
-          </h2>
-          <p className="text-xl text-muted-text max-w-xl mx-auto">
-            Whether you donate, volunteer, or share our story — you are part of the solution.
-          </p>
+          <h2 className="text-5xl md:text-7xl font-display font-bold">Join us in <br /><i>Funding the Future.</i></h2>
+          <p className="text-xl text-muted-text max-w-xl mx-auto">Whether you donate, volunteer, or share our story — you are part of the solution.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-            <Button
-              variant="primary"
-              className="w-full sm:w-auto px-12"
-              onClick={() => navigate('/donate')}
-            >
-              Donate Powerfully
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-full sm:w-auto px-12"
-              onClick={() => navigate('/join-volunteer')}
-            >
-              Become a Volunteer
-            </Button>
+            <Button variant="primary" className="w-full sm:w-auto px-12" onClick={() => navigate('/donate')}>Donate Powerfully</Button>
+            <Button variant="ghost" className="w-full sm:w-auto px-12" onClick={() => navigate('/join-volunteer')}>Become a Volunteer</Button>
           </div>
         </section>
-
       </div>
     </div>
   );
