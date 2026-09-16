@@ -200,11 +200,11 @@ function Home() {
               Mission
             </a>
             <Link
-              to="/learn-story#meet-the-team"
+              to="/learn-story#leaders"
               className="flex-1 flex items-center justify-center gap-1 text-center font-medium hover:text-forest-green transition-colors py-3"
             >
               <Users size={16} />
-              <span>Meet the Team</span>
+              <span>Leaders</span>
             </Link>
             <NavDropdown
               label="Impact"
@@ -247,12 +247,12 @@ function Home() {
                   Our Mission
                 </a>
                 <Link
-                  to="/learn-story#meet-the-team"
+                  to="/learn-story#leaders"
                   className="flex items-center gap-2 text-lg font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <Users size={18} />
-                  Meet the Team
+                  Leaders
                 </Link>
                 <div className="space-y-3">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-forest-green">Impact</p>
