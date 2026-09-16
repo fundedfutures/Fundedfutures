@@ -203,7 +203,6 @@ function Home() {
               to="/learn-story#leaders"
               className="flex-1 flex items-center justify-center gap-1 text-center font-medium hover:text-forest-green transition-colors py-3"
             >
-              <Users size={16} />
               <span>Leaders</span>
             </Link>
             <NavDropdown
@@ -251,7 +250,6 @@ function Home() {
                   className="flex items-center gap-2 text-lg font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  <Users size={18} />
                   Leaders
                 </Link>
                 <div className="space-y-3">
