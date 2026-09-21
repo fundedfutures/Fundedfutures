@@ -200,10 +200,10 @@ function Home() {
               Mission
             </a>
             <Link
-              to="/learn-story#leaders"
+              to="/learn-story#management"
               className="flex-1 flex items-center justify-center gap-1 text-center font-medium hover:text-forest-green transition-colors py-3"
             >
-              <span>Leaders</span>
+              <span>Management</span>
             </Link>
             <NavDropdown
               label="Impact"
@@ -246,11 +246,11 @@ function Home() {
                   Our Mission
                 </a>
                 <Link
-                  to="/learn-story#leaders"
+                  to="/learn-story#management"
                   className="flex items-center gap-2 text-lg font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Leaders
+                  Management
                 </Link>
                 <div className="space-y-3">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-forest-green">Impact</p>
