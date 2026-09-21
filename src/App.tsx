@@ -203,6 +203,7 @@ function Home() {
               to="/learn-story#management"
               className="flex-1 flex items-center justify-center gap-1 text-center font-medium hover:text-forest-green transition-colors py-3"
             >
+              <Users size={16} />
               <span>Management</span>
             </Link>
             <NavDropdown
@@ -250,6 +251,7 @@ function Home() {
                   className="flex items-center gap-2 text-lg font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
+                  <Users size={18} />
                   Management
                 </Link>
                 <div className="space-y-3">
