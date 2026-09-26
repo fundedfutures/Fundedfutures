@@ -201,7 +201,7 @@ function Home() {
             </a>
             <Link
               to="/learn-story#management"
-              className="flex-1 flex items-center justify-center gap-1 text-center font-medium hover:text-forest-green transition-colors py-3"
+              className="flex-1 text-center font-medium hover:text-forest-green transition-colors py-3"
             >
               <span>Management</span>
             </Link>
@@ -247,7 +247,7 @@ function Home() {
                 </a>
                 <Link
                   to="/learn-story#management"
-                  className="flex items-center gap-2 text-lg font-medium"
+                  className="text-lg font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Management
