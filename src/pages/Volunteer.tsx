@@ -119,13 +119,16 @@ export default function Volunteer() {
   const formatLongDate = (d: Date) =>
     d.toLocaleDateString('en-KE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
+  const MAX_COMMITTEES = 2;
+
   const toggleCommittee = (committee: string) => {
-    setFormData(prev => ({
-      ...prev,
-      committees: prev.committees.includes(committee)
-        ? prev.committees.filter(c => c !== committee)
-        : [...prev.committees, committee]
-    }));
+    setFormData(prev => {
+      if (prev.committees.includes(committee)) {
+        return { ...prev, committees: prev.committees.filter(c => c !== committee) };
+      }
+      if (prev.committees.length >= MAX_COMMITTEES) return prev; // ignore extra picks
+      return { ...prev, committees: [...prev.committees, committee] };
+    });
   };
 
   const selectInterviewDate = (d: Date) => {
@@ -370,21 +373,25 @@ export default function Volunteer() {
 
             {/* Preferred committees (checklist) */}
             <div className="md:col-span-2 space-y-3">
-              <label className={labelClass}>Preferred Committees (select all that interest you)</label>
+              <label className={labelClass}>Preferred Committees</label>
               <div className="flex flex-wrap gap-3">
                 {COMMITTEES.map(committee => {
                   const checked = formData.committees.includes(committee);
+                  const locked = !checked && formData.committees.length >= MAX_COMMITTEES;
                   return (
                     <button
                       key={committee}
                       type="button"
                       role="checkbox"
                       aria-checked={checked}
+                      aria-disabled={locked}
                       onClick={() => toggleCommittee(committee)}
                       className={`flex items-center gap-2 px-6 py-3 rounded-full border-2 text-sm font-bold transition-all ${
                         checked
                           ? 'bg-forest-green text-white border-forest-green'
-                          : 'bg-snow text-deep-slate border-transparent hover:border-forest-green/20'
+                          : locked
+                            ? 'bg-snow text-deep-slate border-transparent opacity-40 cursor-not-allowed'
+                            : 'bg-snow text-deep-slate border-transparent hover:border-forest-green/20'
                       }`}
                     >
                       <span className={`w-4 h-4 rounded-md border-2 flex items-center justify-center ${checked ? 'bg-white border-white' : 'border-muted-text/40'}`}>
