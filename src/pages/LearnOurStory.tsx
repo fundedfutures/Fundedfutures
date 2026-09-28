@@ -31,8 +31,8 @@ const teamMembers = [
   },
   {
     name: "Xavi Odumbe",
-    role: "Director of Executive Operations",
-    desc: "Manages day-to-day administrative operations, coordinates schedules and communications, and handles meeting minutes and correspondence as an executive partner to the leadership team.",
+    role: "Secretary",
+    desc: "Manages records, meeting documentation, communication, and administrative work.",
     phone: "0710640206",
     featured: true,
   },
