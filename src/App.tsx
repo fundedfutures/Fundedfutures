@@ -36,6 +36,7 @@ import LearnOurStory from './pages/LearnOurStory';
 import ImpactStories from './pages/ImpactStories';
 import Programs from './pages/Programs';
 import FAQ from './pages/FAQ';
+import Events from './pages/Events'; // NEW
 import ScrollToTop from './components/ScrollToTop';
 import { ContactProvider, useContact } from './context/ContactContext';
 import { Button, SectionHeader, Card } from './components/UI';
@@ -213,6 +214,10 @@ function Home() {
                 { label: 'Direct Impact Areas', to: '/impact-areas' },
               ]}
             />
+            {/* NEW: Events */}
+            <Link to="/events" className="flex-1 text-center font-medium hover:text-forest-green transition-colors py-3">
+              Events
+            </Link>
             <a href="/#get-involved" className="flex-1 text-center font-medium hover:text-forest-green transition-colors py-3">
               Get Involved
             </a>
@@ -257,6 +262,10 @@ function Home() {
                   <Link to="/impact-stories" className="block text-lg font-medium ml-4" onClick={() => setIsMenuOpen(false)}>Impact Stories</Link>
                   <Link to="/impact-areas" className="block text-lg font-medium ml-4" onClick={() => setIsMenuOpen(false)}>Direct Impact Areas</Link>
                 </div>
+                {/* NEW: Events */}
+                <Link to="/events" className="text-lg font-medium" onClick={() => setIsMenuOpen(false)}>
+                  Events
+                </Link>
                 <div className="space-y-3">
                   <p className="text-[10px] font-bold uppercase tracking-widest text-forest-green">How It Works</p>
                   <Link to="/how-it-works/identify" className="block text-lg font-medium ml-4" onClick={() => setIsMenuOpen(false)}>We Identify</Link>
@@ -466,6 +475,7 @@ function Home() {
                 <li><Link to="/learn-story" className="hover:text-forest-green transition-colors">Our Story</Link></li>
                 <li><Link to="/how-it-works/identify" className="hover:text-forest-green transition-colors">Selection Process</Link></li>
                 <li><Link to="/impact-areas" className="hover:text-forest-green transition-colors">Direct Impact</Link></li>
+                <li><Link to="/events" className="hover:text-forest-green transition-colors">Events</Link></li>
                 <li><Link to="/share-work" className="hover:text-forest-green transition-colors">Share Our Work</Link></li>
               </ul>
             </div>
@@ -537,6 +547,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/impact-areas" element={<ImpactAreas />} />
           <Route path="/impact-stories" element={<ImpactStories />} />
+          <Route path="/events" element={<Events />} /> {/* NEW */}
           <Route path="/subscribe" element={<Subscribe />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-use" element={<TermsOfUse />} />
