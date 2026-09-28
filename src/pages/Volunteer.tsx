@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, CheckCircle, AlertCircle, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '../components/UI';
+
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzYO7PdOL92bD-lUeGeKd96uhCfFfzvGCsJ-IM1Z-h7xUY9Pl7xP10giYJlVd2ry_Z7/exec';
 
 export default function Volunteer() {
   const navigate = useNavigate();
@@ -25,6 +26,18 @@ export default function Volunteer() {
 
   const [showCalendar, setShowCalendar] = useState(false);
   const [calendarView, setCalendarView] = useState(new Date(new Date().setFullYear(new Date().getFullYear() - 13)));
+
+  const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const submittingRef = useRef(false); // instant guard against double submits
+
+  // Redirect home 5 seconds after success
+  useEffect(() => {
+    if (!submitted) return;
+    const t = setTimeout(() => navigate('/'), 5000);
+    return () => clearTimeout(t);
+  }, [submitted, navigate]);
 
   const maxDate = new Date();
   maxDate.setFullYear(maxDate.getFullYear() - 13);
@@ -63,14 +76,11 @@ export default function Volunteer() {
     setCalendarView(new Date(calendarView.getFullYear(), monthIndex, 1));
   };
 
-  const [submitted, setSubmitted] = useState(false);
-
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
   const validatePhone = (phone: string) => {
-    // Basic phone validation (can be adjusted)
     return /^\+?[0-9\s-]{8,}$/.test(phone);
   };
 
@@ -90,46 +100,73 @@ export default function Volunteer() {
     }
   };
 
-const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault();
-  
-  const newErrors = {
-    name: formData.name.trim() === '' ? 'This field is invalid' : '',
-    email: !validateEmail(formData.email) ? 'This field is invalid' : '',
-    phone: !validatePhone(formData.phone) ? 'This field is invalid' : '',
-    birthDate: !formData.birthDate ? 'This field is invalid' : ''
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    // Block duplicate submissions immediately
+    if (submittingRef.current) return;
+
+    const newErrors = {
+      name: formData.name.trim() === '' ? 'This field is invalid' : '',
+      email: !validateEmail(formData.email) ? 'This field is invalid' : '',
+      phone: !validatePhone(formData.phone) ? 'This field is invalid' : '',
+      birthDate: !formData.birthDate ? 'This field is invalid' : ''
+    };
+    setErrors(newErrors);
+
+    if (newErrors.name || newErrors.email || newErrors.phone || newErrors.birthDate) return;
+
+    submittingRef.current = true;
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          birthDate: formData.birthDate?.toLocaleDateString('en-KE'),
+          whyJoin: formData.whyJoin,
+          skills: formData.skills,
+          experience: formData.experience
+        })
+      });
+      setSubmitted(true);
+    } catch {
+      setSubmitError('Something went wrong. Please check your connection and try again.');
+      submittingRef.current = false; // allow retry only on real failure
+      setIsSubmitting(false);
+    }
   };
 
-  setErrors(newErrors);
-
-  if (!newErrors.name && !newErrors.email && !newErrors.phone && !newErrors.birthDate) {
-    fetch('https://script.google.com/macros/s/AKfycbyh-BKQPAw2uoL5RjvUYGbAtcZKMDiqRsWvD9fbONyXtqsMMc7sBNDvFnTzZgYPY3c/exec', {
-      method: 'POST',
-      body: JSON.stringify({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        birthDate: formData.birthDate?.toLocaleDateString('en-KE'),
-        whyJoin: formData.whyJoin,
-        skills: formData.skills,
-        experience: formData.experience
-      })
-    })
-    .then(() => {
-      setSubmitted(true);
-      setTimeout(() => navigate('/'), 5000);
-    })
-    .catch(() => {
-      setSubmitted(true);
-      setTimeout(() => navigate('/'), 5000);
-    });
+  // Thank-you card (replaces the form after submitting)
+  if (submitted) {
+    return (
+      <div className="min-h-screen bg-snow text-deep-slate font-body flex items-center justify-center px-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-white rounded-[3rem] p-10 md:p-16 border border-frosted-blue/30 text-center max-w-xl"
+        >
+          <CheckCircle size={64} className="text-forest-green mx-auto mb-6" />
+          <h1 className="text-3xl md:text-4xl font-display font-bold mb-4">Thank you for registering!</h1>
+          <p className="text-muted-text mb-2">
+            We've sent a confirmation email to {formData.email}. A member of our team will be in touch soon.
+          </p>
+          <p className="text-sm text-muted-text/70 italic">Taking you back to the home page shortly...</p>
+        </motion.div>
+      </div>
+    );
   }
-};
 
   return (
     <div className="min-h-screen bg-snow text-deep-slate font-body">
       <div className="max-w-4xl mx-auto px-6 py-12">
-        <button 
+        <button
           onClick={() => navigate('/')}
           className="flex items-center gap-2 text-muted-text hover:text-forest-green transition-colors mb-12 font-medium"
         >
@@ -147,8 +184,8 @@ const handleSubmit = (e: React.FormEvent) => {
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-2">
               <label className="block text-xs font-bold uppercase tracking-widest text-muted-text ml-2">Full Name *</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
@@ -157,7 +194,7 @@ const handleSubmit = (e: React.FormEvent) => {
               />
               <AnimatePresence>
                 {errors.name && (
-                  <motion.p 
+                  <motion.p
                     initial={{ opacity: 0, y: -5 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
@@ -171,8 +208,8 @@ const handleSubmit = (e: React.FormEvent) => {
 
             <div className="space-y-2">
               <label className="block text-xs font-bold uppercase tracking-widest text-muted-text ml-2">Email Address *</label>
-              <input 
-                type="email" 
+              <input
+                type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
@@ -181,7 +218,7 @@ const handleSubmit = (e: React.FormEvent) => {
               />
               <AnimatePresence>
                 {errors.email && (
-                  <motion.p 
+                  <motion.p
                     initial={{ opacity: 0, y: -5 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
@@ -195,8 +232,8 @@ const handleSubmit = (e: React.FormEvent) => {
 
             <div className="space-y-2">
               <label className="block text-xs font-bold uppercase tracking-widest text-muted-text ml-2">Phone Number *</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
@@ -205,7 +242,7 @@ const handleSubmit = (e: React.FormEvent) => {
               />
               <AnimatePresence>
                 {errors.phone && (
-                  <motion.p 
+                  <motion.p
                     initial={{ opacity: 0, y: -5 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
@@ -219,7 +256,7 @@ const handleSubmit = (e: React.FormEvent) => {
 
             <div className="space-y-2 relative">
               <label className="block text-xs font-bold uppercase tracking-widest text-muted-text ml-2">Date of Birth (Min. 13 Years Old) *</label>
-              <div 
+              <div
                 id="birthdate-picker-trigger"
                 onClick={() => setShowCalendar(!showCalendar)}
                 className={`w-full bg-snow border-2 px-8 py-5 rounded-[2rem] outline-none transition-all font-bold cursor-pointer flex justify-between items-center group relative overflow-hidden ${errors.birthDate ? 'border-red-400' : 'border-transparent focus:border-forest-green/20'}`}
@@ -228,13 +265,11 @@ const handleSubmit = (e: React.FormEvent) => {
                   {formData.birthDate ? formData.birthDate.toLocaleDateString('en-KE', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Select birthday'}
                 </span>
                 <Calendar size={20} className="text-forest-green opacity-50 group-hover:opacity-100 transition-opacity" />
-                
-              {/* Reflection Effect removed */}
               </div>
-              
+
               <AnimatePresence>
                 {errors.birthDate && (
-                  <motion.p 
+                  <motion.p
                     initial={{ opacity: 0, y: -5 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
@@ -248,9 +283,9 @@ const handleSubmit = (e: React.FormEvent) => {
               <AnimatePresence>
                 {showCalendar && (
                   <>
-                    <div 
+                    <div
                       id="calendar-backdrop"
-                      className="fixed inset-0 z-40" 
+                      className="fixed inset-0 z-40"
                       onClick={() => setShowCalendar(false)}
                     />
                     <motion.div
@@ -261,7 +296,7 @@ const handleSubmit = (e: React.FormEvent) => {
                       className="absolute left-0 right-0 top-full mt-4 bg-white rounded-[2.5rem] z-50 p-6 border border-frosted-blue/20"
                     >
                       <div className="flex items-center justify-between mb-4">
-                        <select 
+                        <select
                           id="month-selector"
                           value={calendarView.getMonth()}
                           onChange={(e) => changeMonthByName(parseInt(e.target.value))}
@@ -271,8 +306,8 @@ const handleSubmit = (e: React.FormEvent) => {
                             <option key={month} value={i}>{month}</option>
                           ))}
                         </select>
-                        
-                        <select 
+
+                        <select
                           id="year-selector"
                           value={calendarView.getFullYear()}
                           onChange={(e) => changeYear(parseInt(e.target.value))}
@@ -284,7 +319,7 @@ const handleSubmit = (e: React.FormEvent) => {
                         </select>
 
                         <div className="flex gap-1">
-                          <button 
+                          <button
                             id="prev-month-btn"
                             type="button"
                             onClick={() => changeMonth(-1)}
@@ -292,7 +327,7 @@ const handleSubmit = (e: React.FormEvent) => {
                           >
                             <ChevronLeft size={16} className="text-forest-green" />
                           </button>
-                          <button 
+                          <button
                             id="next-month-btn"
                             type="button"
                             onClick={() => changeMonth(1)}
@@ -320,7 +355,7 @@ const handleSubmit = (e: React.FormEvent) => {
                           const dateObj = new Date(calendarView.getFullYear(), calendarView.getMonth(), dayNum);
                           const isDisabled = dateObj > maxDate;
                           const isSelected = formData.birthDate?.getTime() === dateObj.getTime();
-                          
+
                           return (
                             <button
                               key={dayNum}
@@ -331,8 +366,8 @@ const handleSubmit = (e: React.FormEvent) => {
                               className={`
                                 py-2 rounded-xl text-xs font-bold transition-all
                                 ${isDisabled ? 'opacity-20 cursor-not-allowed' : 'hover:scale-110'}
-                                ${isSelected 
-                                  ? 'bg-forest-green text-white scale-110' 
+                                ${isSelected
+                                  ? 'bg-forest-green text-white scale-110'
                                   : 'hover:bg-snow text-deep-slate'}
                               `}
                             >
@@ -349,7 +384,7 @@ const handleSubmit = (e: React.FormEvent) => {
 
             <div className="md:col-span-2 space-y-2">
               <label className="block text-xs font-bold uppercase tracking-widest text-muted-text ml-2">Why do you want to join FundED Futures?</label>
-              <textarea 
+              <textarea
                 name="whyJoin"
                 value={formData.whyJoin}
                 onChange={handleChange}
@@ -361,8 +396,8 @@ const handleSubmit = (e: React.FormEvent) => {
 
             <div className="space-y-2">
               <label className="block text-xs font-bold uppercase tracking-widest text-muted-text ml-2">Key Skills</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 name="skills"
                 value={formData.skills}
                 onChange={handleChange}
@@ -373,8 +408,8 @@ const handleSubmit = (e: React.FormEvent) => {
 
             <div className="space-y-2">
               <label className="block text-xs font-bold uppercase tracking-widest text-muted-text ml-2">Work Experience</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 name="experience"
                 value={formData.experience}
                 onChange={handleChange}
@@ -384,13 +419,18 @@ const handleSubmit = (e: React.FormEvent) => {
             </div>
 
             <div className="md:col-span-2 pt-8">
-              <Button 
-                variant="primary" 
-                className="w-full py-6 text-xl"
-                onClick={handleSubmit}
+              {submitError && (
+                <p className="text-red-400 text-xs font-bold mb-4 text-center flex items-center justify-center gap-1">
+                  <AlertCircle size={14} /> {submitError}
+                </p>
+              )}
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full py-6 text-xl rounded-[2rem] bg-forest-green text-white font-bold transition-all hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                Submit Application
-              </Button>
+                {isSubmitting ? 'Submitting...' : 'Submit Application'}
+              </button>
             </div>
           </form>
         </div>
