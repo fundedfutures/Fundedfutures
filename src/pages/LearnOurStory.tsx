@@ -51,7 +51,7 @@ const teamMembers = [
     featured: false,
   },
   {
-    name: "Nicole Matheka",
+    name: "Lauren",
     role: "Community Service Chairperson",
     desc: "Identifies community needs, organizes service projects, coordinates volunteers, and monitors project impact.",
     phone: "",
@@ -72,7 +72,7 @@ const teamMembers = [
     featured: false,
   },
   {
-    name: "Joshua Okumu",
+    name: "Dylan Mungatta",
     role: "Membership & Relations Chairperson",
     desc: "Recruits and welcomes members, supports member engagement, and manages relationships with partners and other stakeholders.",
     phone: "",
