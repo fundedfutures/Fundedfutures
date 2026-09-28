@@ -5,6 +5,44 @@ import { ArrowLeft, CheckCircle, AlertCircle, Calendar, ChevronLeft, ChevronRigh
 
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzYO7PdOL92bD-lUeGeKd96uhCfFfzvGCsJ-IM1Z-h7xUY9Pl7xP10giYJlVd2ry_Z7/exec';
 
+const COMMITTEES = [
+  'Finance',
+  'Marketing',
+  'Logistics',
+  'Community Service',
+  'Membership and Relations',
+  'IT'
+];
+
+// Next 16 available interview days: Wednesday to Saturday only
+const getInterviewDates = () => {
+  const dates: Date[] = [];
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() + 2); // give the team at least 2 days notice
+  while (dates.length < 16) {
+    const day = d.getDay(); // 3 = Wed, 4 = Thu, 5 = Fri, 6 = Sat
+    if (day >= 3 && day <= 6) dates.push(new Date(d));
+    d.setDate(d.getDate() + 1);
+  }
+  return dates;
+};
+
+const FieldError = ({ message }: { message: string }) => (
+  <AnimatePresence>
+    {message && (
+      <motion.p
+        initial={{ opacity: 0, y: -5 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
+        className="text-red-400 text-[10px] uppercase font-bold tracking-widest ml-4 flex items-center gap-1"
+      >
+        <AlertCircle size={10} /> {message}
+      </motion.p>
+    )}
+  </AnimatePresence>
+);
+
 export default function Volunteer() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -13,19 +51,23 @@ export default function Volunteer() {
     phone: '',
     birthDate: null as Date | null,
     whyJoin: '',
+    committees: [] as string[],
     skills: '',
-    experience: ''
+    experience: '',
+    interviewDate: null as Date | null
   });
 
   const [errors, setErrors] = useState({
     name: '',
     email: '',
     phone: '',
-    birthDate: ''
+    birthDate: '',
+    interviewDate: ''
   });
 
   const [showCalendar, setShowCalendar] = useState(false);
   const [calendarView, setCalendarView] = useState(new Date(new Date().setFullYear(new Date().getFullYear() - 13)));
+  const [interviewDates] = useState(getInterviewDates);
 
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -47,13 +89,8 @@ export default function Volunteer() {
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
-  const getDaysInMonth = (month: number, year: number) => {
-    return new Date(year, month + 1, 0).getDate();
-  };
-
-  const getFirstDayOfMonth = (month: number, year: number) => {
-    return new Date(year, month, 1).getDay();
-  };
+  const getDaysInMonth = (month: number, year: number) => new Date(year, month + 1, 0).getDate();
+  const getFirstDayOfMonth = (month: number, year: number) => new Date(year, month, 1).getDay();
 
   const handleDateSelect = (day: number) => {
     const selected = new Date(calendarView.getFullYear(), calendarView.getMonth(), day);
@@ -76,12 +113,24 @@ export default function Volunteer() {
     setCalendarView(new Date(calendarView.getFullYear(), monthIndex, 1));
   };
 
-  const validateEmail = (email: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validatePhone = (phone: string) => /^\+?[0-9\s-]{8,}$/.test(phone);
+
+  const formatLongDate = (d: Date) =>
+    d.toLocaleDateString('en-KE', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+  const toggleCommittee = (committee: string) => {
+    setFormData(prev => ({
+      ...prev,
+      committees: prev.committees.includes(committee)
+        ? prev.committees.filter(c => c !== committee)
+        : [...prev.committees, committee]
+    }));
   };
 
-  const validatePhone = (phone: string) => {
-    return /^\+?[0-9\s-]{8,}$/.test(phone);
+  const selectInterviewDate = (d: Date) => {
+    setFormData(prev => ({ ...prev, interviewDate: d }));
+    setErrors(prev => ({ ...prev, interviewDate: '' }));
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -110,11 +159,12 @@ export default function Volunteer() {
       name: formData.name.trim() === '' ? 'This field is invalid' : '',
       email: !validateEmail(formData.email) ? 'This field is invalid' : '',
       phone: !validatePhone(formData.phone) ? 'This field is invalid' : '',
-      birthDate: !formData.birthDate ? 'This field is invalid' : ''
+      birthDate: !formData.birthDate ? 'This field is invalid' : '',
+      interviewDate: !formData.interviewDate ? 'Please pick an interview date' : ''
     };
     setErrors(newErrors);
 
-    if (newErrors.name || newErrors.email || newErrors.phone || newErrors.birthDate) return;
+    if (Object.values(newErrors).some(Boolean)) return;
 
     submittingRef.current = true;
     setIsSubmitting(true);
@@ -131,8 +181,10 @@ export default function Volunteer() {
           phone: formData.phone.trim(),
           birthDate: formData.birthDate?.toLocaleDateString('en-KE'),
           whyJoin: formData.whyJoin,
+          committees: formData.committees.join(', '),
           skills: formData.skills,
-          experience: formData.experience
+          experience: formData.experience,
+          interviewDate: formData.interviewDate ? formatLongDate(formData.interviewDate) : ''
         })
       });
       setSubmitted(true);
@@ -163,6 +215,10 @@ export default function Volunteer() {
     );
   }
 
+  const inputClass = (hasError: boolean) =>
+    `w-full bg-snow border-2 px-8 py-5 rounded-[2rem] outline-none transition-all font-bold ${hasError ? 'border-red-400' : 'border-transparent focus:border-forest-green/20'}`;
+  const labelClass = 'block text-xs font-bold uppercase tracking-widest text-muted-text ml-2';
+
   return (
     <div className="min-h-screen bg-snow text-deep-slate font-body">
       <div className="max-w-4xl mx-auto px-6 py-12">
@@ -183,111 +239,41 @@ export default function Volunteer() {
 
           <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-2">
-              <label className="block text-xs font-bold uppercase tracking-widest text-muted-text ml-2">Full Name *</label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                placeholder="Ex. Jane Doe"
-                className={`w-full bg-snow border-2 px-8 py-5 rounded-[2rem] outline-none transition-all font-bold ${errors.name ? 'border-red-400' : 'border-transparent focus:border-forest-green/20'}`}
-              />
-              <AnimatePresence>
-                {errors.name && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="text-red-400 text-[10px] uppercase font-bold tracking-widest ml-4 flex items-center gap-1"
-                  >
-                    <AlertCircle size={10} /> {errors.name}
-                  </motion.p>
-                )}
-              </AnimatePresence>
+              <label className={labelClass}>Full Name *</label>
+              <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Ex. Jane Doe" className={inputClass(!!errors.name)} />
+              <FieldError message={errors.name} />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-xs font-bold uppercase tracking-widest text-muted-text ml-2">Email Address *</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="jane@example.com"
-                className={`w-full bg-snow border-2 px-8 py-5 rounded-[2rem] outline-none transition-all font-bold ${errors.email ? 'border-red-400' : 'border-transparent focus:border-forest-green/20'}`}
-              />
-              <AnimatePresence>
-                {errors.email && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="text-red-400 text-[10px] uppercase font-bold tracking-widest ml-4 flex items-center gap-1"
-                  >
-                    <AlertCircle size={10} /> {errors.email}
-                  </motion.p>
-                )}
-              </AnimatePresence>
+              <label className={labelClass}>Email Address *</label>
+              <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="jane@example.com" className={inputClass(!!errors.email)} />
+              <FieldError message={errors.email} />
             </div>
 
             <div className="space-y-2">
-              <label className="block text-xs font-bold uppercase tracking-widest text-muted-text ml-2">Phone Number *</label>
-              <input
-                type="text"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="+254 700 000000"
-                className={`w-full bg-snow border-2 px-8 py-5 rounded-[2rem] outline-none transition-all font-bold ${errors.phone ? 'border-red-400' : 'border-transparent focus:border-forest-green/20'}`}
-              />
-              <AnimatePresence>
-                {errors.phone && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="text-red-400 text-[10px] uppercase font-bold tracking-widest ml-4 flex items-center gap-1"
-                  >
-                    <AlertCircle size={10} /> {errors.phone}
-                  </motion.p>
-                )}
-              </AnimatePresence>
+              <label className={labelClass}>Phone Number *</label>
+              <input type="text" name="phone" value={formData.phone} onChange={handleChange} placeholder="+254 700 000000" className={inputClass(!!errors.phone)} />
+              <FieldError message={errors.phone} />
             </div>
 
             <div className="space-y-2 relative">
-              <label className="block text-xs font-bold uppercase tracking-widest text-muted-text ml-2">Date of Birth (Min. 13 Years Old) *</label>
+              <label className={labelClass}>Date of Birth (Min. 13 Years Old) *</label>
               <div
                 id="birthdate-picker-trigger"
                 onClick={() => setShowCalendar(!showCalendar)}
-                className={`w-full bg-snow border-2 px-8 py-5 rounded-[2rem] outline-none transition-all font-bold cursor-pointer flex justify-between items-center group relative overflow-hidden ${errors.birthDate ? 'border-red-400' : 'border-transparent focus:border-forest-green/20'}`}
+                className={`${inputClass(!!errors.birthDate)} cursor-pointer flex justify-between items-center group relative overflow-hidden`}
               >
                 <span className={formData.birthDate ? 'text-deep-slate' : 'text-muted-text/50 font-normal'}>
                   {formData.birthDate ? formData.birthDate.toLocaleDateString('en-KE', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Select birthday'}
                 </span>
                 <Calendar size={20} className="text-forest-green opacity-50 group-hover:opacity-100 transition-opacity" />
               </div>
-
-              <AnimatePresence>
-                {errors.birthDate && (
-                  <motion.p
-                    initial={{ opacity: 0, y: -5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="text-red-400 text-[10px] uppercase font-bold tracking-widest ml-4 flex items-center gap-1"
-                  >
-                    <AlertCircle size={10} /> {errors.birthDate}
-                  </motion.p>
-                )}
-              </AnimatePresence>
+              <FieldError message={errors.birthDate} />
 
               <AnimatePresence>
                 {showCalendar && (
                   <>
-                    <div
-                      id="calendar-backdrop"
-                      className="fixed inset-0 z-40"
-                      onClick={() => setShowCalendar(false)}
-                    />
+                    <div id="calendar-backdrop" className="fixed inset-0 z-40" onClick={() => setShowCalendar(false)} />
                     <motion.div
                       id="calendar-dropdown"
                       initial={{ opacity: 0, y: 10, scale: 0.95 }}
@@ -319,20 +305,10 @@ export default function Volunteer() {
                         </select>
 
                         <div className="flex gap-1">
-                          <button
-                            id="prev-month-btn"
-                            type="button"
-                            onClick={() => changeMonth(-1)}
-                            className="p-2 hover:bg-snow rounded-full transition-colors"
-                          >
+                          <button id="prev-month-btn" type="button" onClick={() => changeMonth(-1)} className="p-2 hover:bg-snow rounded-full transition-colors">
                             <ChevronLeft size={16} className="text-forest-green" />
                           </button>
-                          <button
-                            id="next-month-btn"
-                            type="button"
-                            onClick={() => changeMonth(1)}
-                            className="p-2 hover:bg-snow rounded-full transition-colors"
-                          >
+                          <button id="next-month-btn" type="button" onClick={() => changeMonth(1)} className="p-2 hover:bg-snow rounded-full transition-colors">
                             <ChevronRight size={16} className="text-forest-green" />
                           </button>
                         </div>
@@ -366,9 +342,7 @@ export default function Volunteer() {
                               className={`
                                 py-2 rounded-xl text-xs font-bold transition-all
                                 ${isDisabled ? 'opacity-20 cursor-not-allowed' : 'hover:scale-110'}
-                                ${isSelected
-                                  ? 'bg-forest-green text-white scale-110'
-                                  : 'hover:bg-snow text-deep-slate'}
+                                ${isSelected ? 'bg-forest-green text-white scale-110' : 'hover:bg-snow text-deep-slate'}
                               `}
                             >
                               {dayNum}
@@ -383,7 +357,7 @@ export default function Volunteer() {
             </div>
 
             <div className="md:col-span-2 space-y-2">
-              <label className="block text-xs font-bold uppercase tracking-widest text-muted-text ml-2">Why do you want to join FundED Futures?</label>
+              <label className={labelClass}>Why do you want to join FundED Futures?</label>
               <textarea
                 name="whyJoin"
                 value={formData.whyJoin}
@@ -394,8 +368,37 @@ export default function Volunteer() {
               ></textarea>
             </div>
 
+            {/* Preferred committees (checklist) */}
+            <div className="md:col-span-2 space-y-3">
+              <label className={labelClass}>Preferred Committees (select all that interest you)</label>
+              <div className="flex flex-wrap gap-3">
+                {COMMITTEES.map(committee => {
+                  const checked = formData.committees.includes(committee);
+                  return (
+                    <button
+                      key={committee}
+                      type="button"
+                      role="checkbox"
+                      aria-checked={checked}
+                      onClick={() => toggleCommittee(committee)}
+                      className={`flex items-center gap-2 px-6 py-3 rounded-full border-2 text-sm font-bold transition-all ${
+                        checked
+                          ? 'bg-forest-green text-white border-forest-green'
+                          : 'bg-snow text-deep-slate border-transparent hover:border-forest-green/20'
+                      }`}
+                    >
+                      <span className={`w-4 h-4 rounded-md border-2 flex items-center justify-center ${checked ? 'bg-white border-white' : 'border-muted-text/40'}`}>
+                        {checked && <CheckCircle size={12} className="text-forest-green" />}
+                      </span>
+                      {committee}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             <div className="space-y-2">
-              <label className="block text-xs font-bold uppercase tracking-widest text-muted-text ml-2">Key Skills</label>
+              <label className={labelClass}>Key Skills</label>
               <input
                 type="text"
                 name="skills"
@@ -407,7 +410,7 @@ export default function Volunteer() {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-xs font-bold uppercase tracking-widest text-muted-text ml-2">Work Experience</label>
+              <label className={labelClass}>Work Experience</label>
               <input
                 type="text"
                 name="experience"
@@ -416,6 +419,37 @@ export default function Volunteer() {
                 placeholder="Years of experience or roles"
                 className="w-full bg-snow border-2 border-transparent focus:border-forest-green/20 px-8 py-5 rounded-[2rem] outline-none transition-all font-bold"
               />
+            </div>
+
+            {/* Preferred interview date (Wed - Fri only) */}
+            <div className="md:col-span-2 space-y-3">
+              <label className={labelClass}>Preferred Interview Date (Wed – Sat) *</label>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                {interviewDates.map(d => {
+                  const selected = formData.interviewDate?.getTime() === d.getTime();
+                  return (
+                    <button
+                      key={d.getTime()}
+                      type="button"
+                      onClick={() => selectInterviewDate(d)}
+                      className={`px-4 py-3 rounded-2xl border-2 text-xs font-bold transition-all ${
+                        selected
+                          ? 'bg-forest-green text-white border-forest-green'
+                          : 'bg-snow text-deep-slate border-transparent hover:border-forest-green/20'
+                      }`}
+                    >
+                      <span className="block uppercase tracking-widest opacity-70">
+                        {d.toLocaleDateString('en-KE', { weekday: 'short' })}
+                      </span>
+                      {d.toLocaleDateString('en-KE', { day: 'numeric', month: 'short' })}
+                    </button>
+                  );
+                })}
+              </div>
+              <FieldError message={errors.interviewDate} />
+              <p className="text-xs text-muted-text italic ml-2">
+                We'll do our best to interview you on this date, but we may reach out a little sooner or later.
+              </p>
             </div>
 
             <div className="md:col-span-2 pt-8">
