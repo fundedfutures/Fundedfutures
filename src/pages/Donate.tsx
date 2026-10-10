@@ -1,3 +1,5 @@
+import { copyText } from '../components/clipboard';
+import { trackEvent } from '../components/Analytics';
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
@@ -186,8 +188,8 @@ const InstructionModal = ({ isOpen, onClose, method, amount, currency }: any) =>
 
   if (!method) return null;
 
-  const copyToClipboard = (text: string, field: string) => {
-    navigator.clipboard.writeText(text);
+  const copyToClipboard = async (text: string, field: string) => {
+    if (!await copyText(text)) return;
     setCopiedField(field);
     setTimeout(() => setCopiedField(null), 2000);
   };
@@ -362,6 +364,10 @@ export default function Donate() {
   };
 
   const handleMethodSelect = (methodId: string) => {
+    if (currencyCode !== 'KES') {
+      setError('M-PESA Paybill accepts Kenyan shillings. Select KES before making this payment.');
+      return;
+    }
     setPaymentMethod(methodId);
     
     if (methodId === 'mpesa') {
@@ -380,6 +386,15 @@ export default function Donate() {
   };
 
   const handleDonate = async () => {
+    if (isProcessing) return;
+    if (currencyCode !== 'KES') {
+      setError('M-PESA Paybill accepts Kenyan shillings. Select KES before submitting payment confirmation.');
+      return;
+    }
+    if (donorEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(donorEmail.trim())) {
+      setError('Please enter a valid email address or leave the optional email blank.');
+      return;
+    }
     if (!confirmationCode || confirmationCode.trim().length < 5) {
       setError('A valid confirmation code is mandatory to track your donation.');
       return;
@@ -391,7 +406,7 @@ export default function Donate() {
       await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors', // Apps Script requires no-cors from browser
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({
           donorName: donorName.trim() || 'Anonymous',
           donorEmail: donorEmail.trim(),
@@ -403,11 +418,13 @@ export default function Donate() {
       });
       // no-cors means we can't read the response, but the script still receives it
     } catch (err) {
-      // Silently fail — don't block the donor from the thank-you page
-      console.error('Logging error:', err);
+      setError('We could not submit your payment confirmation. Please check your connection and try again, or contact us with your transaction code.');
+      setIsProcessing(false);
+      return;
     }
 
     setIsProcessing(false);
+      trackEvent('donation_confirmation_submit', { status: 'submitted_unverified' });
     navigate('/thank-you');
   };
 
@@ -505,7 +522,7 @@ export default function Donate() {
                     value={amountInput}
                     onChange={handleAmountInputChange}
                     onBlur={handleAmountInputBlur}
-                    className="flex-1 bg-transparent outline-none font-bold text-2xl text-deep-slate placeholder:text-muted-text/30"
+                    className="min-w-0 w-full flex-1 bg-transparent outline-none font-bold text-2xl text-deep-slate placeholder:text-muted-text/30"
                     placeholder={String(config.min)}
                   />
                   <span className="text-muted-text text-xs font-bold uppercase tracking-widest">{currencyCode}</span>

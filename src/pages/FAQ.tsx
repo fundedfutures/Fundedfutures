@@ -24,7 +24,7 @@ const faqs = [
   {
     question: "How can I volunteer?",
     answer: "We are always looking for passionate individuals to join our family! You can volunteer as a mentor, assist with student verification, or support our operations. Visit our 'Join Our Volunteer Family' page to fill out an application.",
-    link: "/volunteer",
+    link: "/join-volunteer",
     linkText: "Apply to Volunteer",
     icon: <Heart className="w-5 h-5" />
   },
@@ -88,7 +88,7 @@ export default function FAQ() {
               className="group"
             >
               <div 
-                id={`faq-item-${idx}`}
+                data-analytics-action="faq_toggle" id={`faq-item-${idx}`}
                 onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
                 className={`
                   w-full text-left p-8 rounded-[2.5rem] transition-all cursor-pointer border relative overflow-hidden

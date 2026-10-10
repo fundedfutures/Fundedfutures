@@ -1,3 +1,4 @@
+import { copyText } from '../components/clipboard';
 import React from 'react';
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
@@ -129,23 +130,21 @@ ${WEBSITE_URL}`;
 export default function ShareWork() {
   const navigate = useNavigate();
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(WEBSITE_URL);
-    alert("Website link copied!");
+  const handleCopyLink = async () => {
+    if (await copyText(WEBSITE_URL)) alert("Website link copied!");
   };
 
   const handleCopyAsset = async (asset: ShareAsset) => {
-    await navigator.clipboard.writeText(getShareText(asset));
-    alert("Share text copied!");
+    if (await copyText(getShareText(asset))) alert("Share text copied!");
   };
 
   const handleShareAsset = async (asset: ShareAsset) => {
     if (navigator.share) {
-      await navigator.share({
-        title: asset.title,
-        text: getShareText(asset),
-        url: WEBSITE_URL,
-      });
+      try {
+        await navigator.share({ title: asset.title, text: getShareText(asset), url: WEBSITE_URL });
+      } catch (error) {
+        if (!(error instanceof DOMException && error.name === "AbortError")) await handleCopyAsset(asset);
+      }
       return;
     }
 

@@ -4,6 +4,8 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import Analytics from './components/Analytics';
+import CookieConsent from './components/CookieConsent';
 import { motion, AnimatePresence } from 'motion/react';
 import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import {
@@ -131,9 +133,9 @@ function NavDropdown({
       className={`relative group ${className ?? ''}`}
       onMouseEnter={() => setIsOpen(true)}
       onMouseLeave={() => setIsOpen(false)}
-      onClick={() => setIsOpen((v) => !v)}
+
     >
-      <button className="w-full font-medium hover:text-forest-green transition-colors flex items-center justify-center gap-1 py-2">
+      <button type="button" aria-expanded={isOpen} onClick={(event) => setIsOpen((v) => event.detail === 0 ? !v : true)} className="w-full font-medium hover:text-forest-green transition-colors flex items-center justify-center gap-1 py-2">
         {label}
         <ChevronDown
           size={14}
@@ -161,7 +163,6 @@ function NavDropdown({
 function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showCookiePopup, setShowCookiePopup] = useState(false);
   const [socialPopup, setSocialPopup] = useState<SocialLink | null>(null);
   const navigate = useNavigate();
   const { openContact } = useContact();
@@ -169,16 +170,10 @@ function Home() {
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
-    if (!localStorage.getItem('cookieDismissed')) {
-      setTimeout(() => setShowCookiePopup(true), 1500);
-    }
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const dismissCookie = () => {
-    setShowCookiePopup(false);
-    localStorage.setItem('cookieDismissed', 'true');
-  };
 
   return (
     <div className="min-h-screen selection:bg-forest-green/30">
@@ -230,7 +225,7 @@ function Home() {
               </Button>
             </div>
           </div>
-          <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          <button type="button" aria-label="Toggle navigation" aria-expanded={isMenuOpen} className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             {isMenuOpen ? <CloseIcon /> : <Menu />}
           </button>
         </div>
@@ -241,7 +236,7 @@ function Home() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden bg-white absolute top-full left-0 w-full overflow-hidden border-b border-gray-100"
+              className="md:hidden bg-white absolute top-full left-0 w-full max-h-[calc(100dvh-5rem)] overflow-y-auto border-b border-gray-100"
             >
               <div className="flex flex-col p-6 gap-6">
                 <Link to="/" className="text-lg font-medium" onClick={() => { setIsMenuOpen(false); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
@@ -335,22 +330,22 @@ function Home() {
         </section>
 
         {/* ── Our Mission ── */}
-        <section id="our-mission" className="py-20 md:py-32 px-[5%] bg-[#f7fcfb]">
+        <section id="our-mission" className="overflow-hidden py-20 md:py-32 px-[5%] bg-[#f7fcfb]">
           <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
             <motion.div initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="relative aspect-square md:aspect-[4/5] rounded-3xl overflow-hidden border border-gray-100 order-2 md:order-1">
               <img src="https://i.imgur.com/c2tmG1v.jpeg" alt="Community context" className="w-full h-full object-cover hover:scale-105 transition-smooth duration-1000" referrerPolicy="no-referrer" />
               <div className="absolute inset-0 bg-gradient-to-t from-deep-slate/40 to-transparent" />
             </motion.div>
-            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="space-y-6 text-center md:text-left order-1 md:order-2">
+            <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="min-w-0 space-y-6 text-center md:text-left order-1 md:order-2">
               <h2 className="text-4xl md:text-6xl leading-tight">Our Mission</h2>
               <p className="text-base md:text-lg leading-relaxed opacity-90">Education is a fundamental right, yet for thousands of students across Kenya, financial barriers make schooling an impossible dream. fundED futures was born from a simple belief: that poverty should never be a barrier to potential.</p>
               <p className="text-base md:text-lg leading-relaxed opacity-90">providing not just school fees, but the uniforms, books, and materials they need to thrive.</p>
               <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
-                <Button onClick={() => navigate('/impact-areas')} className="flex items-center justify-center gap-4 bg-white !text-deep-slate border border-forest-green/10 !py-6 !rounded-[2rem] hover:bg-forest-green/5">
+                <Button onClick={() => navigate('/impact-areas')} className="flex items-center justify-center gap-4 !px-4 sm:!px-8 min-w-0 bg-white !text-deep-slate border border-forest-green/10 !py-6 !rounded-[2rem] hover:bg-forest-green/5">
                   <div className="w-10 h-10 bg-forest-green/10 rounded-full flex items-center justify-center text-forest-green"><HandHeart size={20} /></div>
                   <span className="font-bold text-base">Direct Impact</span>
                 </Button>
-                <Button onClick={() => navigate('/programs')} className="flex items-center justify-center gap-4 bg-white !text-deep-slate border border-frosted-blue/20 !py-6 !rounded-[2rem] hover:bg-frosted-blue/10">
+                <Button onClick={() => navigate('/programs')} className="flex items-center justify-center gap-4 !px-4 sm:!px-8 min-w-0 bg-white !text-deep-slate border border-frosted-blue/20 !py-6 !rounded-[2rem] hover:bg-frosted-blue/10">
                   <div className="w-10 h-10 bg-frosted-blue/20 rounded-full flex items-center justify-center text-frosted-blue"><BookOpen size={20} /></div>
                   <span className="font-bold text-base">View Our Programs</span>
                 </Button>
@@ -493,7 +488,7 @@ function Home() {
               <p className="opacity-70 text-sm mb-4">Stay updated with our latest student success stories.</p>
               <form className="flex gap-2" onSubmit={(e) => { e.preventDefault(); const email = (e.currentTarget.elements.namedItem('footer-email') as HTMLInputElement).value; navigate('/subscribe', { state: { email } }); }}>
                 <input id="footer-email" name="footer-email" type="email" placeholder="Email address" className="bg-white/5 border border-white/10 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-forest-green w-full" required />
-                <button type="submit" className="bg-forest-green p-2 rounded-full hover:bg-forest-green/80 transition-colors"><ArrowRight size={18} /></button>
+                <button type="submit" aria-label="Continue newsletter signup" className="bg-forest-green p-2 rounded-full hover:bg-forest-green/80 transition-colors"><ArrowRight size={18} /></button>
               </form>
               <p className="mt-4 text-xs text-forest-green font-bold cursor-pointer hover:underline" onClick={openContact}>Contact: fundedfuturesorg@gmail.com</p>
             </div>
@@ -501,20 +496,6 @@ function Home() {
           <div className="pt-12 text-center text-sm"><p className="text-forest-green font-bold">© {new Date().getFullYear()} fundED futures. All rights reserved. Based in Nairobi, Kenya.</p></div>
         </div>
       </footer>
-
-      {/* ── Cookie popup ── */}
-      <AnimatePresence>
-        {showCookiePopup && (
-          <motion.div initial={{ y: 50, x: '-50%', opacity: 0 }} animate={{ y: 0, x: '-50%', opacity: 1 }} exit={{ y: 50, x: '-50%', opacity: 0 }} className="fixed bottom-6 left-1/2 z-[100] w-[92%] max-w-md bg-white/95 backdrop-blur-xl p-8 rounded-[2rem] border border-gray-200 text-center">
-            <h4 className="text-lg font-display font-bold mb-3">Cookie Preferences</h4>
-            <p className="text-sm text-muted-text mb-8 leading-relaxed">We use cookies to enhance your experience and analyze our impact. By clicking "Accept", you consent to our use of cookies.</p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button variant="primary" className="text-xs py-2.5 px-8 w-full sm:w-auto" onClick={dismissCookie}>Accept Cookies</Button>
-              <Button variant="ghost" className="text-xs py-2.5 px-8 w-full sm:w-auto border-gray-200" onClick={dismissCookie}>Reject</Button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* ── Social confirmation popup ── */}
       <AnimatePresence>
@@ -542,6 +523,8 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
+        <Analytics />
+        <CookieConsent />
       <ContactProvider>
         <Routes>
           <Route path="/" element={<Home />} />

@@ -113,7 +113,7 @@ export default function Events() {
             <button
               key={event.id}
               type="button"
-              onClick={() => setSelected(event)}
+              data-analytics-action="event_open" onClick={() => setSelected(event)}
               className="group text-left bg-white rounded-3xl border border-gray-100 overflow-hidden hover:border-forest-green/30 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-green"
             >
               <div className="relative">

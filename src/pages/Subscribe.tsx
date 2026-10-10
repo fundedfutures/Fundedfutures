@@ -1,3 +1,4 @@
+import { trackEvent } from '../components/Analytics';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, Check, X } from 'lucide-react';
@@ -120,6 +121,7 @@ export default function Subscribe() {
           preferences: preferences
         })
       });
+      trackEvent('newsletter_submit', { status: 'submitted_unverified' });
       setSubmitted(true);
       setIsSubmitting(false);
       // submittingRef stays true until the form is reset, so no repeat submits

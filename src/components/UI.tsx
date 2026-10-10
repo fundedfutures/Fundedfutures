@@ -49,7 +49,7 @@ export const SectionHeader = ({ title, subtitle, centered = true }: { title: str
   </motion.div>
 );
 
-export const Button = ({ children, variant = 'primary', className = '', onClick }: any) => {
+export const Button = ({ children, variant = 'primary', className = '', onClick, type = 'button', ...props }: any) => {
   const variants: any = {
     primary: 'bg-forest-green text-white hover:bg-forest-green/90',
     ghost: 'bg-transparent border-2 border-forest-green text-deep-slate hover:bg-forest-green/10',
@@ -59,6 +59,8 @@ export const Button = ({ children, variant = 'primary', className = '', onClick 
 
   return (
     <motion.button 
+      {...props}
+      type={type}
       onClick={onClick}
       whileHover={{ opacity: 0.95 }}
       whileTap={{ scale: 0.98 }}
@@ -78,6 +80,7 @@ export const Card = ({ children, className = "", onClick, ...props }: any) => (
       y: -2,
     }}
     onClick={onClick}
+    data-analytics-action={onClick ? 'card_open' : undefined}
     className={`bg-white rounded-[3rem] border border-gray-100 transition-all duration-300 cursor-pointer overflow-hidden p-8 ${className}`}
     {...props}
   >

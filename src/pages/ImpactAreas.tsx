@@ -87,7 +87,7 @@ export default function ImpactAreas() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.05 }}
-              onClick={() => setSelectedArea(area)}
+              data-analytics-action="impact_area_open" onClick={() => setSelectedArea(area)}
               className="group bg-white rounded-3xl overflow-hidden border border-gray-100 flex flex-col cursor-pointer"
             >
               <div className="relative h-48 overflow-hidden">

@@ -35,7 +35,7 @@ export default function PrivacyPolicy() {
     },
     {
       title: "Cookies",
-      content: "We may use cookies and similar tracking technologies to enhance your browsing experience, analyze site traffic, and understand user behavior. You can control or disable cookies through your individual browser settings, though this may impact certain site features."
+      content: "With your consent, Google Analytics collects page visits, referral sources, device information, and website interactions to help us improve this site. Analytics stays disabled if you reject it. We do not send form answers, names, email addresses, phone numbers, or donation transaction codes to analytics. You can change your choice using Cookie Preferences below."
     },
     {
       title: "Data Security",
@@ -64,6 +64,7 @@ export default function PrivacyPolicy() {
           <h1 className="text-4xl md:text-5xl font-display font-bold mb-4">Privacy Policy</h1>
           <p className="text-muted-text mb-12 font-medium">Last updated: April 2026</p>
 
+          <button type="button" onClick={() => window.dispatchEvent(new Event('open-cookie-preferences'))} className="text-forest-green font-semibold underline mb-8">Cookie Preferences</button>
           <div className="space-y-12">
             {sections.map((section, idx) => (
               <section key={idx} className="border-b border-gray-100 pb-8 last:border-0">

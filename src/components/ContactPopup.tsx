@@ -30,11 +30,11 @@ export default function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-snow w-full max-w-lg rounded-[3rem] p-10 pointer-events-auto relative overflow-hidden border border-frosted-blue/20"
+              className="bg-snow w-full max-w-lg rounded-[3rem] p-6 sm:p-10 pointer-events-auto relative max-h-[85dvh] overflow-y-auto overflow-x-hidden border border-frosted-blue/20"
             >
               <button
                 onClick={onClose}
-                className="absolute top-6 right-6 p-2 hover:bg-frosted-blue/10 rounded-full transition-colors text-muted-text hover:text-deep-slate group"
+                aria-label="Close contact" className="absolute top-6 right-6 p-2 hover:bg-frosted-blue/10 rounded-full transition-colors text-muted-text hover:text-deep-slate group"
               >
                 <X size={24} className="group-hover:rotate-90 transition-transform duration-300" />
               </button>
@@ -64,18 +64,18 @@ export default function ContactPopup({ isOpen, onClose }: ContactPopupProps) {
                     rel="noopener noreferrer"
                     whileHover={{ opacity: 0.9 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full flex items-center justify-between bg-white p-6 rounded-[2rem] border border-forest-green/10 group hover:border-forest-green/30 transition-all font-medium"
+                    className="w-full flex items-center justify-between gap-2 bg-white p-4 sm:p-6 rounded-[2rem] border border-forest-green/10 group hover:border-forest-green/30 transition-all font-medium"
                   >
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-forest-green rounded-2xl flex items-center justify-center text-white">
+                    <div className="min-w-0 flex items-center gap-2 sm:gap-4">
+                      <div className="shrink-0 w-10 sm:w-12 h-12 bg-forest-green rounded-2xl flex items-center justify-center text-white">
                         <Mail size={24} />
                       </div>
-                      <div className="text-left">
+                      <div className="min-w-0 text-left">
                         <p className="text-xs font-bold uppercase tracking-widest text-muted-text">Direct Email</p>
-                        <p className="text-lg font-bold text-deep-slate">{email}</p>
+                        <p className="text-sm sm:text-lg break-all font-bold text-deep-slate">{email}</p>
                       </div>
                     </div>
-                    <ExternalLink size={20} className="text-forest-green/40 group-hover:text-forest-green transition-colors" />
+                    <ExternalLink size={20} className="shrink-0 text-forest-green/40 group-hover:text-forest-green transition-colors" />
                   </motion.a>
                 </div>
 

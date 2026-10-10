@@ -1,3 +1,4 @@
+import { trackEvent } from '../components/Analytics';
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useNavigate } from 'react-router-dom';
@@ -190,6 +191,7 @@ export default function Volunteer() {
           interviewDate: formData.interviewDate ? formatLongDate(formData.interviewDate) : ''
         })
       });
+      trackEvent('volunteer_submit', { status: 'submitted_unverified' });
       setSubmitted(true);
     } catch {
       setSubmitError('Something went wrong. Please check your connection and try again.');

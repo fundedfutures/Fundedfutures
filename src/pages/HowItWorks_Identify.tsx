@@ -12,7 +12,7 @@ export default function HowItWorks_Identify() {
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="min-h-screen bg-snow text-deep-slate font-body"
+      className="min-h-screen overflow-x-clip bg-snow text-deep-slate font-body"
     >
       <div className="max-w-6xl mx-auto px-6 py-12">
         <button 
@@ -77,7 +77,7 @@ export default function HowItWorks_Identify() {
           </div>
         </div>
 
-        <div className="mt-32 p-12 bg-deep-slate text-white rounded-[4rem] text-center">
+        <div className="mt-32 p-6 sm:p-12 bg-deep-slate text-white rounded-[4rem] text-center">
           <h2 className="text-3xl font-display font-bold mb-10">Ready to support an identified student?</h2>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
             <motion.button

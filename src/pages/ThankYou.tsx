@@ -52,7 +52,9 @@ export default function ThankYou() {
                     title: 'FundED Futures',
                     text: 'I just supported FundED Futures! Join me in empowering the next generation.',
                     url: window.location.origin,
-                  });
+                  }).catch(() => {});
+                } else {
+                  navigate('/share-work');
                 }
               }}
             >
@@ -62,7 +64,7 @@ export default function ThankYou() {
           </div>
           
           <p className="mt-12 text-sm text-muted-text font-medium opacity-60">
-            A registration confirmation and tax receipt has been sent to your email.
+            For donation confirmation or receipt requests, please contact fundedfuturesorg@gmail.com.
           </p>
         </div>
       </motion.div>
