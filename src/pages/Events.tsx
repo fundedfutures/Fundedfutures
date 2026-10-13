@@ -65,7 +65,7 @@ const events: EventItem[] = [
     howItHelps:
       'Ticket sales, sponsorships and donations from the night go toward school fees, uniforms, books and materials for the students we support.',
     extra:
-      "We are currently in the process of onboarding artists for this concert, including Genesis, Lil Maina and Nikita Kering. The full lineup will be announced as artists are confirmed.",
+      "We are currently in the process of onboarding artists for this concert,including a handul of big stars.The full lineup will be announced as artists are confirmed.",
   },
 ];
 
