@@ -147,17 +147,15 @@ function WelcomePopup() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 24 }}
           transition={{ duration: 0.4 }}
-          className="fixed z-[90] bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:w-96 rounded-3xl overflow-hidden border border-white/30 shadow-2xl text-white"
+          className="fixed z-[90] bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:w-96 rounded-3xl max-h-[90vh] overflow-y-auto border border-white/30 shadow-2xl text-white"
         >
-          {/* Background image + see-through green tint */}
+          {/* Full image at its natural proportions (no cropping) */}
           <img
             src={WELCOME_BACKGROUND}
-            alt=""
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover"
+            alt="fundED futures"
+            className="block w-full h-auto"
             referrerPolicy="no-referrer"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-forest-green/85 via-forest-green/60 to-deep-slate/40 backdrop-blur-[2px]" />
 
           <button
             type="button"
@@ -168,7 +166,7 @@ function WelcomePopup() {
             <CloseIcon size={16} />
           </button>
 
-          <div className="relative p-6 pt-14">
+          <div className="relative p-6 bg-forest-green/80 backdrop-blur-md">
             <p className="text-white/80 font-bold text-xs tracking-widest uppercase mb-2">Upcoming event</p>
             <h4 className="text-2xl font-display font-bold leading-tight">{WELCOME_EVENT_TITLE}</h4>
             <p className="flex items-center gap-2 text-sm text-white/90 mt-1 mb-5">
