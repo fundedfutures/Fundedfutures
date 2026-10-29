@@ -103,7 +103,7 @@ const HOMEPAGE_VIDEO_POSTER = 'https://i.imgur.com/c2tmG1v.jpeg';
 
 const WELCOME_EVENT_TITLE = 'Waridi Bloom';
 const WELCOME_EVENT_DATE = 'December 4';
-const WELCOME_BACKGROUND = 'https://imgur.com/c3821926-6eac-441e-8fab-4d0ccb52f172';
+const WELCOME_BACKGROUND = 'https://i.imgur.com/yq92Fq8.png';
 const WELCOME_DELAY_MS = 2500; // wait a moment so the page loads first
 const WELCOME_STORAGE_KEY = 'ff_welcome_popup_seen';
 
