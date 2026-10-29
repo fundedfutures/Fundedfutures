@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, X as CloseIcon, Music, Music4, Flag, CalendarDays, ImageIcon } from 'lucide-react';
+import { ArrowLeft, X as CloseIcon, Music, Music4, Flag, CalendarDays, ImageIcon, Ticket } from 'lucide-react';
 import { Button } from '../components/UI';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -10,6 +10,9 @@ import { Button } from '../components/UI';
 //    or use a direct image link (e.g. an imgur link).
 // 2. Paste it into the `banner` field of the event below, e.g.  banner: '/golf-banner.jpg'
 // While `banner` is empty ('') a placeholder box is shown instead.
+//
+// TICKET LINKS: add a `ticketUrl` to any event and its popup will show a
+// "Buy Tickets" button that opens that link in a new tab.
 // ─────────────────────────────────────────────────────────────────────────────
 
 type EventItem = {
@@ -18,11 +21,11 @@ type EventItem = {
   date: string;
   shortDate: string;
   banner: string; // <-- ADD BANNER IMAGE HERE
+  ticketUrl?: string; // <-- ADD TICKET LINK HERE (optional)
   icon: React.ReactNode;
   summary: string;
   about: string;
   howItHelps: string;
-  extra?: string;
 };
 
 const events: EventItem[] = [
@@ -40,6 +43,18 @@ const events: EventItem[] = [
       'The money raised from player registrations, sponsorships and donations on the day goes directly toward school fees, uniforms, books and learning materials for the students fundED futures supports across Kenya.',
   },
   {
+    id: 'waridi-bloom',
+    title: 'Waridi Bloom',
+    date: 'December 4',
+    shortDate: 'Dec 4',
+    banner: 'https://i.imgur.com/TGMQy0L.jpeg',
+    ticketUrl: 'https://kenyabuzz.com/events/event/funded-futures-presents-waridi-bloom',
+    icon: <Music size={22} />,
+    summary: 'A night of live music in support of education.',
+    about: 'Waridi Bloom is a live music night presented by fundED futures.',
+    howItHelps: 'Ticket sales go toward school fees, uniforms, books and materials for the students we support.',
+  },
+  {
     id: 'orchestra-concert',
     title: 'Orchestra Concert',
     date: 'December 5',
@@ -51,21 +66,6 @@ const events: EventItem[] = [
       'An orchestra concert is a live performance by a group of musicians playing instruments such as strings, brass, woodwinds and percussion together. It is a chance to enjoy beautiful music in a warm setting while supporting something meaningful.',
     howItHelps:
       'Proceeds from ticket sales, sponsorships and donations at the concert help us fund school fees, materials and mentorship for students who would otherwise be forced to leave school.',
-  },
-  {
-    id: 'music-concert',
-    title: 'Music Concert',
-    date: 'December 12',
-    shortDate: 'Dec 12',
-    banner: '', // <-- ADD MUSIC CONCERT BANNER HERE
-    icon: <Music size={22} />,
-    summary: 'A big night of live music featuring artists we are bringing on board.',
-    about:
-      'A music concert is a live show where artists perform for an audience. A benefit concert like this one brings people together through music and turns ticket sales into real support for children who need it.',
-    howItHelps:
-      'Ticket sales, sponsorships and donations from the night go toward school fees, uniforms, books and materials for the students we support.',
-    extra:
-      "We are currently in the process of onboarding artists for this concert,including a handul of big stars.The full lineup will be announced as artists are confirmed.",
   },
 ];
 
@@ -183,18 +183,24 @@ export default function Events() {
                     <h4 className="font-bold text-deep-slate mb-2">How it helps us raise money</h4>
                     <p className="text-muted-text leading-relaxed">{selected.howItHelps}</p>
                   </div>
-                  {selected.extra && (
-                    <div className="bg-forest-green/5 rounded-2xl p-5">
-                      <h4 className="font-bold text-deep-slate mb-2">Lineup update</h4>
-                      <p className="text-muted-text leading-relaxed">{selected.extra}</p>
-                    </div>
-                  )}
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3 mt-10">
-                  <Button variant="primary" className="w-full sm:w-auto px-8" onClick={() => navigate('/donate')}>
-                    Support This Event
-                  </Button>
+                  {selected.ticketUrl ? (
+                    <a
+                      href={selected.ticketUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      data-analytics-action="event_buy_tickets"
+                      className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-8 py-3 rounded-full bg-forest-green text-white font-bold hover:opacity-90 transition-opacity"
+                    >
+                      <Ticket size={18} /> Buy Tickets
+                    </a>
+                  ) : (
+                    <Button variant="primary" className="w-full sm:w-auto px-8" onClick={() => navigate('/donate')}>
+                      Support This Event
+                    </Button>
+                  )}
                   <Button variant="ghost" className="w-full sm:w-auto px-8 border-forest-green text-forest-green" onClick={() => setSelected(null)}>
                     Close Details
                   </Button>
