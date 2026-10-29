@@ -103,7 +103,7 @@ const HOMEPAGE_VIDEO_POSTER = 'https://i.imgur.com/c2tmG1v.jpeg';
 
 const WELCOME_EVENT_TITLE = 'Waridi Bloom';
 const WELCOME_EVENT_DATE = 'December 4';
-const WELCOME_BACKGROUND = 'https://i.imgur.com/4iX8i1A.jpeg';
+const WELCOME_BACKGROUND = 'https://imgur.com/c3821926-6eac-441e-8fab-4d0ccb52f172';
 const WELCOME_DELAY_MS = 2500; // wait a moment so the page loads first
 const WELCOME_STORAGE_KEY = 'ff_welcome_popup_seen';
 
@@ -147,15 +147,20 @@ function WelcomePopup() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 24 }}
           transition={{ duration: 0.4 }}
-          className="fixed z-[90] bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:w-96 rounded-3xl max-h-[90vh] overflow-y-auto border border-white/30 shadow-2xl text-white"
+          className="fixed z-[90] bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:w-96 rounded-3xl overflow-hidden border border-white/30 shadow-2xl text-white bg-gradient-to-br from-forest-green via-[#0f766e] to-[#5eead4]"
         >
-          {/* Full image at its natural proportions (no cropping) */}
+          {/* Image fills the whole card. If it fails to load, the green/teal gradient shows instead. */}
           <img
             src={WELCOME_BACKGROUND}
-            alt="fundED futures"
-            className="block w-full h-auto"
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover"
             referrerPolicy="no-referrer"
+            onError={(e) => { e.currentTarget.style.display = 'none'; }}
           />
+          {/* Soft tints: light green + teal at the top, deeper green at the bottom for readable text */}
+          <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-[#14b8a6]/25 to-forest-green/90" />
+          <div className="absolute inset-0 bg-gradient-to-br from-forest-green/30 via-transparent to-[#5eead4]/20" />
 
           <button
             type="button"
@@ -166,7 +171,7 @@ function WelcomePopup() {
             <CloseIcon size={16} />
           </button>
 
-          <div className="relative p-6 bg-forest-green/80 backdrop-blur-md">
+          <div className="relative p-6 pt-28">
             <p className="text-white/80 font-bold text-xs tracking-widest uppercase mb-2">Upcoming event</p>
             <h4 className="text-2xl font-display font-bold leading-tight">{WELCOME_EVENT_TITLE}</h4>
             <p className="flex items-center gap-2 text-sm text-white/90 mt-1 mb-5">
