@@ -22,6 +22,7 @@ import {
   Instagram,
   ChevronDown,
   Play,
+  CalendarDays,
 } from 'lucide-react';
 import ImpactAreas from './pages/ImpactAreas';
 import Subscribe from './pages/Subscribe';
@@ -95,6 +96,115 @@ const socialLinks: SocialLink[] = [
 // Vite serves files in public/ from the root URL in production.
 const HOMEPAGE_VIDEO_URL = '/funded-futures-video.mp4';
 const HOMEPAGE_VIDEO_POSTER = 'https://i.imgur.com/c2tmG1v.jpeg';
+
+// ─── Welcome popup (shown once per visit on the homepage) ────────────────────
+// Main goal: send people to /events. Volunteer + newsletter are small buttons.
+// To feature a different event later, edit the constants below.
+
+const WELCOME_EVENT_TITLE = 'Waridi Bloom';
+const WELCOME_EVENT_DATE = 'December 4';
+const WELCOME_BACKGROUND = 'https://i.imgur.com/4iX8i1A.jpeg';
+const WELCOME_DELAY_MS = 2500; // wait a moment so the page loads first
+const WELCOME_STORAGE_KEY = 'ff_welcome_popup_seen';
+
+function WelcomePopup() {
+  const [visible, setVisible] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let seen = false;
+    try {
+      seen = sessionStorage.getItem(WELCOME_STORAGE_KEY) === '1';
+    } catch {
+      /* storage unavailable: just show it */
+    }
+    if (seen) return;
+    const t = window.setTimeout(() => setVisible(true), WELCOME_DELAY_MS);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  const close = () => {
+    setVisible(false);
+    try {
+      sessionStorage.setItem(WELCOME_STORAGE_KEY, '1');
+    } catch {
+      /* ignore */
+    }
+  };
+
+  const go = (path: string) => {
+    close();
+    navigate(path);
+  };
+
+  return (
+    <AnimatePresence>
+      {visible && (
+        <motion.aside
+          role="dialog"
+          aria-label="Upcoming event"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 24 }}
+          transition={{ duration: 0.4 }}
+          className="fixed z-[90] bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:w-96 rounded-3xl overflow-hidden border border-white/30 shadow-2xl text-white"
+        >
+          {/* Background image + see-through green tint */}
+          <img
+            src={WELCOME_BACKGROUND}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover"
+            referrerPolicy="no-referrer"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-forest-green/85 via-forest-green/60 to-deep-slate/40 backdrop-blur-[2px]" />
+
+          <button
+            type="button"
+            onClick={close}
+            aria-label="Close"
+            className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/30 transition-colors"
+          >
+            <CloseIcon size={16} />
+          </button>
+
+          <div className="relative p-6 pt-14">
+            <p className="text-white/80 font-bold text-xs tracking-widest uppercase mb-2">Upcoming event</p>
+            <h4 className="text-2xl font-display font-bold leading-tight">{WELCOME_EVENT_TITLE}</h4>
+            <p className="flex items-center gap-2 text-sm text-white/90 mt-1 mb-5">
+              <CalendarDays size={14} /> {WELCOME_EVENT_DATE}
+            </p>
+
+            <button
+              type="button"
+              onClick={() => go('/events')}
+              className="w-full inline-flex items-center justify-center gap-2 bg-white text-forest-green font-bold text-sm rounded-full py-3 hover:bg-white/90 transition-colors"
+            >
+              See upcoming events <ArrowRight size={16} />
+            </button>
+
+            <div className="grid grid-cols-2 gap-2 mt-3">
+              <button
+                type="button"
+                onClick={() => go('/join-volunteer')}
+                className="bg-forest-green text-white font-bold text-xs rounded-full py-2.5 border border-white/40 hover:bg-forest-green/80 transition-colors"
+              >
+                Volunteer
+              </button>
+              <button
+                type="button"
+                onClick={() => go('/subscribe')}
+                className="bg-forest-green text-white font-bold text-xs rounded-full py-2.5 border border-white/40 hover:bg-forest-green/80 transition-colors"
+              >
+                Newsletter
+              </button>
+            </div>
+          </div>
+        </motion.aside>
+      )}
+    </AnimatePresence>
+  );
+}
 
 // ─── NavDropdown ─────────────────────────────────────────────────────────────
 
@@ -496,6 +606,9 @@ function Home() {
           <div className="pt-12 text-center text-sm"><p className="text-forest-green font-bold">© {new Date().getFullYear()} fundED futures. All rights reserved. Based in Nairobi, Kenya.</p></div>
         </div>
       </footer>
+
+      {/* ── Welcome popup (once per visit) ── */}
+      <WelcomePopup />
 
       {/* ── Social confirmation popup ── */}
       <AnimatePresence>
