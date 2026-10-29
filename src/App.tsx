@@ -103,7 +103,6 @@ const HOMEPAGE_VIDEO_POSTER = 'https://i.imgur.com/c2tmG1v.jpeg';
 
 const WELCOME_EVENT_TITLE = 'Waridi Bloom';
 const WELCOME_EVENT_DATE = 'December 4';
-const WELCOME_BACKGROUND = 'https://i.imgur.com/yq92Fq8.png';
 const WELCOME_DELAY_MS = 2500; // wait a moment so the page loads first
 const WELCOME_STORAGE_KEY = 'ff_welcome_popup_seen';
 
@@ -149,18 +148,11 @@ function WelcomePopup() {
           transition={{ duration: 0.4 }}
           className="fixed z-[90] bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:w-96 rounded-3xl overflow-hidden border border-white/30 shadow-2xl text-white bg-gradient-to-br from-forest-green via-[#0f766e] to-[#5eead4]"
         >
-          {/* Image fills the whole card. If it fails to load, the green/teal gradient shows instead. */}
-          <img
-            src={WELCOME_BACKGROUND}
-            alt=""
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover"
-            referrerPolicy="no-referrer"
-            onError={(e) => { e.currentTarget.style.display = 'none'; }}
-          />
-          {/* Soft tints: light green + teal at the top, deeper green at the bottom for readable text */}
-          <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-[#14b8a6]/25 to-forest-green/90" />
-          <div className="absolute inset-0 bg-gradient-to-br from-forest-green/30 via-transparent to-[#5eead4]/20" />
+          {/* Lightweight decoration (pure CSS, loads instantly): soft green, teal and white glows */}
+          <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-forest-green/60" />
+          <div className="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-[#5eead4]/40 blur-3xl" />
+          <div className="absolute -bottom-20 -left-16 w-56 h-56 rounded-full bg-white/20 blur-3xl" />
+          <div className="absolute top-1/3 -left-10 w-40 h-40 rounded-full bg-forest-green/50 blur-2xl" />
 
           <button
             type="button"
@@ -171,7 +163,7 @@ function WelcomePopup() {
             <CloseIcon size={16} />
           </button>
 
-          <div className="relative p-6 pt-28">
+          <div className="relative p-6 pt-12">
             <p className="text-white/80 font-bold text-xs tracking-widest uppercase mb-2">Upcoming event</p>
             <h4 className="text-2xl font-display font-bold leading-tight">{WELCOME_EVENT_TITLE}</h4>
             <p className="flex items-center gap-2 text-sm text-white/90 mt-1 mb-5">
@@ -439,6 +431,26 @@ function Home() {
                 </div>
               )}
             </div>
+          </motion.div>
+        </section>
+
+        {/* ── Upcoming Events ── */}
+        <section id="upcoming-events" className="py-16 md:py-20 px-[5%] bg-snow">
+          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.8 }} className="max-w-5xl mx-auto rounded-[2rem] md:rounded-[3rem] bg-gradient-to-br from-forest-green via-[#0f766e] to-[#5eead4] text-white p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+            <div>
+              <p className="text-white/80 font-bold text-sm tracking-widest uppercase mb-3">Upcoming events</p>
+              <h2 className="text-3xl md:text-5xl font-display font-bold mb-3">{WELCOME_EVENT_TITLE}</h2>
+              <p className="flex items-center justify-center md:justify-start gap-2 text-white/90">
+                <CalendarDays size={18} /> {WELCOME_EVENT_DATE}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate('/events')}
+              className="inline-flex items-center justify-center gap-2 bg-white text-forest-green font-bold rounded-full px-8 py-4 hover:bg-white/90 transition-colors w-full md:w-auto shrink-0"
+            >
+              View upcoming events <ArrowRight size={18} />
+            </button>
           </motion.div>
         </section>
 
