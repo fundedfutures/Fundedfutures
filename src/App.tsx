@@ -101,8 +101,8 @@ const HOMEPAGE_VIDEO_POSTER = 'https://i.imgur.com/c2tmG1v.jpeg';
 // Main goal: send people to /events. Volunteer + newsletter are small buttons.
 // To feature a different event later, edit the constants below.
 
-const WELCOME_EVENT_TITLE = 'Waridi Bloom';
-const WELCOME_EVENT_DATE = 'December 4';
+const WELCOME_EVENT_TITLE = 'Christmas Orchestra Concert';
+const WELCOME_EVENT_DATE = 'December 5';
 const WELCOME_DELAY_MS = 2500; // wait a moment so the page loads first
 const WELCOME_STORAGE_KEY = 'ff_welcome_popup_seen';
 

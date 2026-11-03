@@ -56,14 +56,15 @@ const events: EventItem[] = [
   },
   {
     id: 'orchestra-concert',
-    title: 'Orchestra Concert',
+    title: 'Christmas Orchestra Concert',
     date: 'December 5',
     shortDate: 'Dec 5',
-    banner: '', // <-- ADD ORCHESTRA CONCERT BANNER HERE
+    banner: '/christmas-orchestra-concert.jpeg',
+    ticketUrl: 'https://kenyabuzz.com/events/event/funded-futures-presents-christman-orchestra-concert',
     icon: <Music4 size={22} />,
-    summary: 'An evening of live orchestral music in support of education.',
+    summary: 'An evening of Christmas orchestral music in support of education.',
     about:
-      'An orchestra concert is a live performance by a group of musicians playing instruments such as strings, brass, woodwinds and percussion together. It is a chance to enjoy beautiful music in a warm setting while supporting something meaningful.',
+      'A Christmas charity concert presented by fundED futures in collaboration with the Kenyatta University Orchestra. Join families, students and the wider community for an evening of festive orchestral music in support of education.',
     howItHelps:
       'Proceeds from ticket sales, sponsorships and donations at the concert help us fund school fees, materials and mentorship for students who would otherwise be forced to leave school.',
   },
@@ -110,11 +111,12 @@ export default function Events() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {events.map((event) => (
+            <div key={event.id} className="bg-white rounded-3xl border border-gray-100 overflow-hidden hover:border-forest-green/30 transition-colors">
             <button
               key={event.id}
               type="button"
               data-analytics-action="event_open" onClick={() => setSelected(event)}
-              className="group text-left bg-white rounded-3xl border border-gray-100 overflow-hidden hover:border-forest-green/30 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-forest-green"
+              className="group block w-full text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-forest-green"
             >
               <div className="relative">
                 <Banner event={event} className="w-full h-48" />
@@ -130,6 +132,20 @@ export default function Events() {
                 <p className="text-sm text-muted-text leading-relaxed">{event.summary}</p>
               </div>
             </button>
+            {event.ticketUrl && (
+              <div className="px-6 pb-6">
+                <a
+                  href={event.ticketUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-analytics-action="event_buy_tickets"
+                  className="inline-flex items-center justify-center gap-2 w-full px-6 py-3 rounded-full bg-forest-green text-white font-bold hover:opacity-90 transition-opacity"
+                >
+                  <Ticket size={18} /> Buy Tickets
+                </a>
+              </div>
+            )}
+            </div>
           ))}
         </div>
       </div>
