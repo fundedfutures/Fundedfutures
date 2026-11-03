@@ -60,6 +60,7 @@ const events: EventItem[] = [
     date: 'December 5',
     shortDate: 'Dec 5',
     banner: '', // <-- ADD ORCHESTRA CONCERT BANNER HERE
+    ticketUrl: 'https://kenyabuzz.com/events/event/funded-futures-presents-christman-orchestra-concert',
     icon: <Music4 size={22} />,
     summary: 'An evening of live orchestral music in support of education.',
     about:
